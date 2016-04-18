@@ -10,8 +10,8 @@
 
 'use strict'
 
-import { SET_VISIBILITY_FILTER, visibilityFilters } from '../actions';
-const { SHOW_ALL } = visibilityFilters;
+import { SET_VISIBILITY_FILTER, VisibilityFilters } from '../actions';
+const { SHOW_ALL } = VisibilityFilters;
 
 const visibilityFilter = (state = SHOW_ALL, action) => {
     switch (action.type) {

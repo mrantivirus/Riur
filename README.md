@@ -1,9 +1,27 @@
-# Riur (Ree-Urr)
+# Riur (Ree-Err)
 A boilerplate based on React.js, Immutable.js, Universal Javascript, and Redux.
 
 [![Build Status](https://travis-ci.org/Mr-Antivirus/Riur.svg?branch=master)](https://travis-ci.org/Mr-Antivirus/Riur) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mr-Antivirus/Riur/pull/new/master)
 [![node version](https://img.shields.io/node/v/riur.svg?maxAge=2592000)](https://github.com/Mr-Antivirus/Riur)
+
+### Installation
+```sh
+$ git clone https://github.com/Mr-Antivirus/Riur.git riur
+$ cd riur
+$ rm -rf .git
+$ git init
+```
+
+### Roadmap
+Here is a list of planned features:
+* Universal Auth
+* Database
+* React Router
+
+### Development
+Want to contribute? Great!
+Just fork the repo and make a pull request. I will be glad to take a look at it.
 
 
 The MIT License (MIT)

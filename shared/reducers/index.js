@@ -15,7 +15,7 @@ import todos from './todos.reducer';
 import visibilityFilter from './visibilityFilter.reducer';
 
 const rootReducer = combineReducers({
-    todoReducer,
+    todos,
     visibilityFilter
 });
 

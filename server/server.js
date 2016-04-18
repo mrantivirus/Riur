@@ -10,12 +10,6 @@
 
 'use strict'
 
-//Temporary
-import { createStore } from 'redux';
-import todoApp from '../shared/reducers';
-let store = createStore(todoApp);
-console.log(store);
-
 // Initializes express and sets the routes
 import routes from './routes';
 
