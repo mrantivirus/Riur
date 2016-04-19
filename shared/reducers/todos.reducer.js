@@ -10,27 +10,38 @@
 
 'use strict'
 
-import { ADD_TODO, COMPLETE_TODO } from '../actions';
+const todo = (state, action) => {
+    switch (action.type) {
+        case 'ADD_TODO':
+            return {
+                id: action.id,
+                text: action.text,
+                isCompleted: false
+            }
+        case 'TOGGLE_TODO':
+            if (state.id !== action.id) {
+                return state;
+            }
+
+            return Object.assign({}, state, {
+                isCompleted: !state.isCompleted
+            });
+        default:
+            return state;
+    }
+};
 
 const todos = (state = [], action) => {
     switch (action.type) {
-        case ADD_TODO:
+        case 'ADD_TODO':
             return [
-                ...state.todos,
-                {
-                    text: action.text,
-                    isCompleted: false
-                }
+                ...state,
+                todo(undefined, action)
             ];
-        case COMPLETE_TODO:
-            return state.map((todo, index) => {
-                if (index === action.index) {
-                    return Object.assign({}, todo, {
-                        isCompleted: true
-                    });
-                }
-                return todo;
-            });
+        case 'TOGGLE_TODO':
+            return state.map((t) => 
+                todo(t, action)
+            );
         default:
             return state;
     }

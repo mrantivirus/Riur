@@ -11,11 +11,6 @@
 'use strict';
 
 /*
-* Action types
-*/
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-
-/*
 * Other Constants
 */
 export const VisibilityFilters = {
@@ -27,6 +22,9 @@ export const VisibilityFilters = {
 /*
 * Action Creators
 */
-export function setVisibilityFilter (filter) {
-    return { type: SET_VISIBILITY_FILTER, filter };
+export const setVisibilityFilter = (filter) => {
+    return {
+        type: 'SET_VISIBILITY_FILTER',
+        filter
+    };
 };

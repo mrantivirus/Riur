@@ -40,7 +40,7 @@ export default class Layout extends Component {
                     <meta name='viewport' content='width=device-width, initial-scale=1' />
                 </head>
                 <body>
-                    <div id='app' dangerouslySetInnerHTML={{__html: content}} />
+                    <div id='content' dangerouslySetInnerHTML={{__html: content}} />
                     <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet='UTF-8' />
                     <script src={assets.javascript.main} charSet='UTF-8' />
                 </body>

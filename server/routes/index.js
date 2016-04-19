@@ -13,11 +13,12 @@
 // Packages
 import express from 'express';
 import React from 'react';
-import ReactDom from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 // Custom components
-import App from '../../shared/app';
+import App from '../../shared/components/app.component';
 import Html from '../../shared/containers/html.container';
 import { PORT } from '../config';
 import reducers from '../../shared/reducers';
@@ -57,9 +58,13 @@ app.use('*', (req, res) => {
         }
     };
 
-    const appContent = ReactDom.renderToString(<App />) 
+    const appContent = renderToString(
+        <Provider store={store}>
+            <App />
+        </Provider>
+    ) 
     
-    res.send('<!doctype html>' + ReactDom.renderToString(<Html assets={asset} content={appContent} store={store} />));
+    res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} />));
 });
 
 app.listen(PORT, () => {

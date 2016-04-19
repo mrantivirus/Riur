@@ -12,8 +12,21 @@
 
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
+import reducers from '../shared/reducers';
+import App from '../shared/components/app.component';
+
+const store = createStore(reducers);
 
 if (process.env.NODE_ENV !== 'production') {
     window.React = React; // Enable debugger
 }
+
+render (
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('content')
+)

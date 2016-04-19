@@ -6,7 +6,7 @@ module.exports = {
     entry: [
         'webpack/hot/dev-server',
         'webpack-hot-middleware/client',
-        './shared/app.js'
+        './client/client.js'
     ],
     
     output: {

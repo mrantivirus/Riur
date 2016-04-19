@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "start": "node index.js"
+    "start": "node_modules/.bin/nodemon index.js",
+    "start:prod": "node index.js"
   },
   "engines": {
     "node": "4.x || 5.x",
@@ -50,7 +51,8 @@
     "react-router": "^2.2.4",
     "redux": "^3.4.0",
     "redux-thunk": "^2.0.1",
-    "serialize-javascript": "^1.2.0"
+    "serialize-javascript": "^1.2.0",
+    "webpack-isomorphic-tools": "^2.2.48"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
@@ -58,6 +60,7 @@
     "babel-preset-react": "^6.5.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
+    "nodemon": "^1.9.1",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"

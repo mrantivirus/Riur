@@ -11,18 +11,21 @@
 'use strict';
 
 /*
-* Action types
-*/
-export const ADD_TODO = 'ADD_TODO';
-export const COMPLETE_TODO = 'COMPLETE_TODO';
-
-/*
 * Action Creators
 */
-export function addTodo (text) {
-    return { type: ADD_TODO, text };
+let nextId = 0;
+
+export const addTodo = (text) => {
+    return {
+        type: 'ADD_TODO',
+        id: nextId++,
+        text
+    };
 };
 
-export function completeTodo (index) {
-    return { type: COMPLETE_TODO, index };
+export const toggleTodo = (id) => {
+    return {
+        type: 'TOGGLE_TODO',
+        id
+    }
 };
