@@ -1,8 +1,10 @@
-// Enable runtime transpilation of ES6 in Node
-var fs = require('fs');
+'use strict'
 
-var babelrc = fs.readFileSync('./.babelrc');
-var config;
+// Enable runtime transpilation of ES6 in Node
+let fs = require('fs');
+
+let babelrc = fs.readFileSync('./.babelrc');
+let config;
 
 try {
     config = JSON.parse(babelrc);
@@ -12,7 +14,7 @@ try {
 }
 
 require('babel-register')(config);
-require('babel-polyfill');
+//require('babel-polyfill');
 // END
 
 require('./server/server');

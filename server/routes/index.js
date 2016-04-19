@@ -39,19 +39,11 @@ let compiler = webpack(webpackConfig);
 
 app.use(webpackDevMiddleware(compiler, {
     hot: true,
-    filename: 'bundle.js',
-    publicPath: '/',
-    stats: {
-        colors: true,
-    },
-    historyApiFallback: true
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath
 }));
 
-app.use(webpackHotMiddleware(compiler, {
-    log: console.log,
-    path: '',
-    heartbeat: 10 * 1000
-}));
+app.use(webpackHotMiddleware(compiler, {}));
 
 // END Webpack
 
