@@ -10,4 +10,10 @@
 
 'use strict'
 
-import reactDom from 'react-dom';
+import React from 'react';
+import { render } from 'react-dom';
+
+
+if (process.env.NODE_ENV !== 'production') {
+    window.React = React; // Enable debugger
+}

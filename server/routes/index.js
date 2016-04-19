@@ -29,6 +29,32 @@ let app = express();
 app.use('/api/todos', todos);
 // END API Routes
 
+// Webpack stuff
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import webpackConfig from '../../webpack.config.dev';
+
+let compiler = webpack(webpackConfig);
+
+app.use(webpackDevMiddleware(compiler, {
+    hot: true,
+    filename: 'bundle.js',
+    publicPath: '/',
+    stats: {
+        colors: true,
+    },
+    historyApiFallback: true
+}));
+
+app.use(webpackHotMiddleware(compiler, {
+    log: console.log,
+    path: '',
+    heartbeat: 10 * 1000
+}));
+
+// END Webpack
+
 // Catch-all for React-Router
 app.use('*', (req, res) => {
     const store = createStore(reducers);
