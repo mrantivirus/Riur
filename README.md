@@ -3,7 +3,9 @@ A boilerplate based on React.js, Immutable.js, Universal Javascript, and Redux.
 
 [![Build Status](https://travis-ci.org/Mr-Antivirus/Riur.svg?branch=master)](https://travis-ci.org/Mr-Antivirus/Riur) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mr-Antivirus/Riur/pull/new/master)
-[![node version](https://img.shields.io/node/v/riur.svg?maxAge=2592000)](https://github.com/Mr-Antivirus/Riur)
+[![node version](https://img.shields.io/badge/node-%3E=4.0-brightgreen.svg)](https://github.com/Mr-Antivirus/Riur)
+[![Github All Releases](https://img.shields.io/github/downloads/Mr-Antivirus/Riur/total.svg)](https://github.com/Mr-Antivirus/Riur/archive/master.zip)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Mr-Antivirus/Riur/blob/master/LICENSE)
 
 ### Installation
 ```sh
@@ -15,9 +17,11 @@ $ git init
 
 ### Roadmap
 Here is a list of planned features:
-* Universal Auth
+* Universal Auth (JWT)
 * Database
 * React Router
+* Hot Reloading
+* Immutable Redux Store
 
 ### Development
 Want to contribute? Great!
