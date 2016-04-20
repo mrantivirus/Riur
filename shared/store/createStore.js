@@ -10,13 +10,13 @@
 
 'use strict';
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from '../reducers';
+import { selectSubreddit, fetchPosts } from '../actions'
 
 export default function createReduxStore(initialState = {}) {
-    let newCreateStore = applyMiddleware(thunk)(createStore);
-    const store = newCreateStore(reducers, initialState);    
+    const store = createStore(reducers, initialState, applyMiddleware(thunk));    
     
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers

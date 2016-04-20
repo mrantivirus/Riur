@@ -12,3 +12,4 @@
 
 export * from './todo.actions';
 export * from './visibilityFilter.actions';
+export * from './subreddit.actions';

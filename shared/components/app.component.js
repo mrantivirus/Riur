@@ -17,14 +17,17 @@ import { HTML } from '../../server/config';
 import Footer from './footer.component';
 import AddTodo from '../containers/addTodo.container';
 import VisibleTodoList from '../containers/visibleTodoList.container';
+import Reddit from '../containers/reddit.container';
 
 const App = () => (
     <div>
         <Helmet {...HTML.head}/>
-        Welcome to Riur!
+        <h1>Welcome to Riur!</h1>
         <AddTodo />
         <VisibleTodoList />
         <Footer />
+        <br />
+        <Reddit />
     </div>
 );
 

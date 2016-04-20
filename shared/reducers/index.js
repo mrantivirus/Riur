@@ -13,10 +13,13 @@
 import { combineReducers } from 'redux';
 import todos from './todos.reducer';
 import visibilityFilter from './visibilityFilter.reducer';
+import { postsBySubreddit, selectedSubreddit } from './subreddit.reducer';
 
 const rootReducer = combineReducers({
     todos,
-    visibilityFilter
+    visibilityFilter,
+    postsBySubreddit,
+    selectedSubreddit
 });
 
 export default rootReducer;

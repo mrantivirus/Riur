@@ -22,6 +22,7 @@ Here is a list of planned features:
 * React Router
 * Hot Reloading
 * Immutable Redux Store
+* Unit Tests!
 
 ### Development
 Want to contribute? Great!
