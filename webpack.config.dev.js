@@ -1,10 +1,9 @@
 var webpack = require('webpack');
 
 module.exports = {
-    //context: __dirname + '/shared',
+    devtool: 'eval-source-map',
     
     entry: [
-        'webpack/hot/dev-server',
         'webpack-hot-middleware/client',
         './client/client.js'
     ],
@@ -26,11 +25,9 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                exclude: [/node_modules/, /.+\.config.js/],
-                loader: 'babel-loader',
-                // query: {
-                //     presets: ['react-hmre']
-                // }
+                exclude: [/node_modules/],
+                loader: 'babel',
+                presets: ["react", "es2015", "stage-0", 'react-hmre']
             }
         ]
     },

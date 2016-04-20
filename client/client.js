@@ -13,15 +13,18 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import createStore from '../shared/store/createStore';
 
-import reducers from '../shared/reducers';
 import App from '../shared/components/app.component';
 
-const store = createStore(reducers);
+const store = createStore(window.__app_data);
 
-if (process.env.NODE_ENV !== 'production') {
+if (window.__isProduction === false) {
     window.React = React; // Enable debugger
+}
+
+if (module.hot) {
+    module.hot.accept();
 }
 
 render (

@@ -10,7 +10,7 @@
 
 'use strict'
 
-import React, { Component } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import { HTML } from '../../server/config';
 
@@ -27,9 +27,5 @@ const App = () => (
         <Footer />
     </div>
 );
-
-if (module.hot) {
-    module.hot.accept();
-}
 
 export default App;

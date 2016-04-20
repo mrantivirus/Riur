@@ -14,14 +14,13 @@
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 // Custom components
 import App from '../../shared/components/app.component';
 import Html from '../../shared/containers/html.container';
+import createStore from '../../shared/store/createStore';
 import { PORT } from '../config';
-import reducers from '../../shared/reducers';
 
 // API Routes
 import todos from './todo.routes';
@@ -44,13 +43,13 @@ app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath
 }));
 
-app.use(webpackHotMiddleware(compiler, {}));
+app.use(webpackHotMiddleware(compiler));
 
 // END Webpack
 
 // Catch-all for React-Router
 app.use('*', (req, res) => {
-    const store = createStore(reducers);
+    const store = createStore();
     
     const asset = {
         javascript: {
@@ -64,7 +63,9 @@ app.use('*', (req, res) => {
         </Provider>
     ) 
     
-    res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} />));
+    const isProd = process.env.NODE_ENV !== 'production' ? false : true;
+    
+    res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
 });
 
 app.listen(PORT, () => {

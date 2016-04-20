@@ -19,11 +19,12 @@ export default class Layout extends Component {
     static propTypes = {
         assets: PropTypes.object,
         content: PropTypes.string,
-        store: PropTypes.object
+        store: PropTypes.object,
+        isProd: PropTypes.bool
     }
     
     render () {
-        const { assets, content, store } = this.props;
+        const { assets, content, store, isProd } = this.props;
         const head = Helmet.rewind();
         const attrs = head.htmlAttributes.toComponent();
         
@@ -41,7 +42,7 @@ export default class Layout extends Component {
                 </head>
                 <body>
                     <div id='content' dangerouslySetInnerHTML={{__html: content}} />
-                    <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet='UTF-8' />
+                    <script dangerouslySetInnerHTML={{__html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}`}} charSet='UTF-8' />
                     <script src={assets.javascript.main} charSet='UTF-8' />
                 </body>
             </html>
