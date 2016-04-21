@@ -15,6 +15,8 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+let app = express();
+
 
 // Custom components
 import App from '../../shared/components/app.component';
@@ -22,10 +24,10 @@ import Html from '../../shared/containers/html.container';
 import createStore from '../../shared/store/createStore';
 import { PORT } from '../config';
 
+app.use(express.static('static'));
+
 // API Routes
 import todos from './todo.routes';
-
-let app = express();
 app.use('/api/todos', todos);
 // END API Routes
 

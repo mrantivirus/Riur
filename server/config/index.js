@@ -40,6 +40,9 @@ export const HTML = {
             { property: 'og:creator', content: '@mrantivirus' },
             { property: 'og:image:width', content: '200' },
             { property: 'og:image:height', content: '200' },
+        ],
+        link: [
+            { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' }
         ]
     }
 };

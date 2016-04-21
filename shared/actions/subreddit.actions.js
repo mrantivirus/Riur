@@ -66,7 +66,7 @@ const shouldFetchPosts = (state, subreddit) => {
     
     if (!posts) {
         return true;
-    } else if (post.isFetching) {
+    } else if (posts.isFetching) {
         return false;
     } else {
         return posts.didInvalidate;

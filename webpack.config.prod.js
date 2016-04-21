@@ -1,10 +1,9 @@
 var webpack = require('webpack');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'production',
     
     entry: [
-        'webpack-hot-middleware/client',
         './client/client.js'
     ],
     
@@ -17,7 +16,7 @@ module.exports = {
     resolve: {
         extensions: ['', '.js'],
         moduleDirectories: [
-            'node_modules'
+            'node_modules', 'shared'
         ]
     },
     
@@ -34,7 +33,12 @@ module.exports = {
     
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
     ]
 }
