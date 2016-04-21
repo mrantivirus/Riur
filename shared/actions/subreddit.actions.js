@@ -52,7 +52,7 @@ export const fetchPosts = (subreddit) => {
         //  the the API call is starting.
         dispatch(requestPosts(subreddit));
         
-        return fetch(`http://www.reddit.com/r/${subreddit}.json`)
+        return fetch(`https://www.reddit.com/r/${subreddit}.json`)
             .then(response => response.json())
             
             // We can dispatch as many times as we want
