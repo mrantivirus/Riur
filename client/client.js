@@ -13,11 +13,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
 import createStore from '../shared/store/createStore';
 
-import App from '../shared/components/app.component';
+import routes from '../shared/routes';
 
 const store = createStore(window.__app_data);
+const history = browserHistory;
 
 if (window.__isProduction === false) {
     window.React = React; // Enable debugger
@@ -29,7 +31,7 @@ if (module.hot) {
 
 render (
     <Provider store={store}>
-        <App />
+        <Router history={history} routes={routes} />
     </Provider>,
     document.getElementById('content')
 )

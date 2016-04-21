@@ -15,6 +15,7 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { match, RouterContext } from 'react-router';
 let app = express();
 
 
@@ -22,6 +23,7 @@ let app = express();
 import App from '../../shared/components/app.component';
 import Html from '../../shared/containers/html.container';
 import createStore from '../../shared/store/createStore';
+import routes from '../../shared/routes';
 import { PORT } from '../config';
 
 app.use(express.static('static'));
@@ -50,24 +52,58 @@ app.use(webpackHotMiddleware(compiler));
 // END Webpack
 
 // Catch-all for React-Router
-app.use('*', (req, res) => {
-    const store = createStore();
+// app.use('*', (req, res) => {
+//     const store = createStore();
     
-    const asset = {
-        javascript: {
-            main: 'bundle.js'
-        }
-    };
+//     const asset = {
+//         javascript: {
+//             main: 'bundle.js'
+//         }
+//     };
 
-    const appContent = renderToString(
-        <Provider store={store}>
-            <App />
-        </Provider>
-    ) 
+//     const appContent = renderToString(
+//         <Provider store={store}>
+//             <App />
+//         </Provider>
+//     ) 
     
-    const isProd = process.env.NODE_ENV !== 'production' ? false : true;
+//     const isProd = process.env.NODE_ENV !== 'production' ? false : true;
     
-    res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+//     res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+// });
+
+app.use('*', (req, res, next) => {
+    match({ routes, location:req.url }, (err, redirectLocation, renderProps) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        
+        if (redirectLocation) {
+            return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        }
+        
+        if (!renderProps) {
+            return next();
+        }
+        
+        const store = createStore();
+        
+        const asset = {
+            javascript: {
+                main: 'bundle.js'
+            }
+        };
+
+        const appContent = renderToString(
+            <Provider store={store}>
+                <RouterContext {...renderProps} />
+            </Provider>
+        ) 
+        
+        const isProd = process.env.NODE_ENV !== 'production' ? false : true;
+        
+        res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+    });
 });
 
 app.listen(PORT, () => {

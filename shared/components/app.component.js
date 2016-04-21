@@ -10,25 +10,21 @@
 
 'use strict'
 
-import React from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { HTML } from '../../server/config';
 
-import Footer from './footer.component';
-import AddTodo from '../containers/addTodo.container';
-import VisibleTodoList from '../containers/visibleTodoList.container';
-import Reddit from '../containers/reddit.container';
 
-const App = () => (
-    <div>
-        <Helmet {...HTML.head}/>
-        <h1>Welcome to Riur!</h1>
-        <AddTodo />
-        <VisibleTodoList />
-        <Footer />
-        <br />
-        <Reddit />
-    </div>
-);
+class App extends Component {
+    render () {
+        return (
+            <div>
+                <Helmet {...HTML.head}/>
+                <h1>Welcome to Riur!</h1>
+                { this.props.children }
+            </div>
+        )
+    }
+};
 
 export default App;
