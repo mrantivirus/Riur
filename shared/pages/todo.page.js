@@ -20,6 +20,7 @@ import VisibleTodoList from '../containers/visibleTodoList.container';
 const TodoPage = () => (
     <div>
         <Helmet title='TodoApp' />
+        <h1>This is a simple Todo App</h1>
         <AddTodo />
         <VisibleTodoList />
         <Footer />

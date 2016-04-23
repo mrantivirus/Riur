@@ -16,7 +16,7 @@ import Helmet from 'react-helmet';
 const HomePage = () => (
     <div>
         <Helmet title='Dashboard' />
-        <h2>Hey, this is the home page!</h2>
+        <h1>Welcome to Riur!</h1>
     </div>
 );
 

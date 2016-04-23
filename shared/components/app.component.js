@@ -13,14 +13,14 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { HTML } from '../../server/config';
-
+import SiteNavbar from '../containers/siteNavbar.container';
 
 class App extends Component {
     render () {
         return (
             <div>
                 <Helmet {...HTML.head}/>
-                <h1>Welcome to Riur!</h1>
+                <SiteNavbar {...this.props.location} />
                 { this.props.children }
             </div>
         )

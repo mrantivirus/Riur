@@ -18,6 +18,7 @@ import Reddit from '../containers/reddit.container';
 const RedditPage = () => (
     <div>
         <Helmet title='Reddit-Redux' />
+        <h1>This is Redux's Reddit API Example</h1>
         <Reddit />
     </div>
 );
