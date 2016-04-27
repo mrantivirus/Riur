@@ -90,7 +90,7 @@ app.use('*', (req, res, next) => {
         
         const asset = {
             javascript: {
-                main: 'bundle.js'
+                main: '/js/bundle.js'
             }
         };
 

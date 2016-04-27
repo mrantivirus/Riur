@@ -10,18 +10,22 @@
 
 'use strict';
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-const Todo = ({ onClick, isCompleted, text }) => (
-    <li
-        onClick={onClick}
-        style={{
-            textDecoration: isCompleted ? 'line-through' : 'none'
-        }}
-    >
-        {text}
-    </li>
-);
+class Todo extends Component {
+    render() {
+        return (
+            <li
+                onClick={this.props.onClick}
+                style={{
+                    textDecoration: this.props.isCompleted ? 'line-through' : 'none'
+                }}
+            >
+                {this.props.text}
+            </li>
+        );
+    }
+};
 
 Todo.propTypes = {
     onClick: PropTypes.func.isRequired,

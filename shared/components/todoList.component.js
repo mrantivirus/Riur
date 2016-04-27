@@ -10,20 +10,24 @@
 
 'use strict';
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Todo from './todo.component';
 
-const TodoList = ({ todos, onTodoClick }) => (
-    <ul>
-        {todos.map(todo =>
-            <Todo
-                key={todo.id}
-                {...todo}
-                onClick={() => onTodoClick(todo.id)}
-            />
-        )}
-    </ul>
-);
+class TodoList extends Component {
+    render() {
+        return (
+            <ul>
+                {this.props.todos.map(todo =>
+                    <Todo
+                        key={todo.id}
+                        {...todo}
+                        onClick={() => this.props.onTodoClick(todo.id)}
+                    />
+                )}
+            </ul>
+        );
+    }
+}
 
 TodoList.propTypes = {
     todos: PropTypes.arrayOf(PropTypes.shape({

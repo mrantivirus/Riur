@@ -25,10 +25,6 @@ if (window.__isProduction === false) {
     window.React = React; // Enable debugger
 }
 
-if (module.hot) {
-    module.hot.accept();
-}
-
 render (
     <Provider store={store}>
         <Router history={history} routes={routes} />

@@ -12,10 +12,7 @@
 
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from './components/app.component';
-import HomePage from './pages/home.page';
-import RedditPage from './pages/reddit.page';
-import TodoPage from './pages/todo.page';
+import { App, HomePage, RedditPage, TodoPage } from './pages';
 
 const routes = (
     <Route path='/' component={App} >

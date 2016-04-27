@@ -10,21 +10,25 @@
 
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 
 import Footer from '../components/footer.component';
 import AddTodo from '../containers/addTodo.container';
 import VisibleTodoList from '../containers/visibleTodoList.container';
 
-const TodoPage = () => (
-    <div>
-        <Helmet title='TodoApp' />
-        <h1>This is a simple Todo App</h1>
-        <AddTodo />
-        <VisibleTodoList />
-        <Footer />
-    </div>
-);
+class TodoPage extends Component {
+    render() {
+        return (
+            <div>
+                <Helmet title='TodoApp' />
+                <h1>This is a simple Todo App</h1>
+                <AddTodo />
+                <VisibleTodoList />
+                <Footer />
+            </div>
+        );
+    }
+}
 
 export default TodoPage;

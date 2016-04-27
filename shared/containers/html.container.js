@@ -42,8 +42,8 @@ export default class Layout extends Component {
                 </head>
                 <body>
                     <div id='content' dangerouslySetInnerHTML={{__html: content}} />
-                    <script dangerouslySetInnerHTML={{__html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}`}} charSet='UTF-8' />
-                    <script src={assets.javascript.main} charSet='UTF-8' />
+                    <script dangerouslySetInnerHTML={{__html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}`}} charSet='utf-8' />
+                    <script src={assets.javascript.main} charSet='utf-8' />
                 </body>
             </html>
         );

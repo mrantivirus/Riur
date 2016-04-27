@@ -10,14 +10,18 @@
 
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 
-const HomePage = () => (
-    <div>
-        <Helmet title='Dashboard' />
-        <h1>Welcome to Riur!</h1>
-    </div>
-);
+class HomePage extends Component {
+    render() {
+        return (
+            <div>
+                <Helmet title='Dashboard' />
+                <h1>Welcome to Riur!</h1>
+            </div>
+        );
+    }
+}
 
 export default HomePage;

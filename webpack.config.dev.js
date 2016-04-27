@@ -1,7 +1,8 @@
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     
     entry: [
         'webpack-hot-middleware/client',
@@ -9,9 +10,9 @@ module.exports = {
     ],
     
     output: {
-        path: __dirname + '/',
+        path: path.resolve('./static/js'),
         filename: 'bundle.js',
-        publicPath: '/'
+        publicPath: '/js'
     },
     
     resolve: {
@@ -26,8 +27,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: [/node_modules/],
-                loader: 'babel',
-                presets: ["react", "es2015", "stage-0", 'react-hmre']
+                loader: 'babel-loader',
+                query: {
+                    presets: ["react", "es2015", "stage-0", 'react-hmre']
+                }
             }
         ]
     },

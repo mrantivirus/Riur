@@ -10,17 +10,21 @@
 
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 
 import Reddit from '../containers/reddit.container';
 
-const RedditPage = () => (
-    <div>
-        <Helmet title='Reddit-Redux' />
-        <h1>This is Redux's Reddit API Example</h1>
-        <Reddit />
-    </div>
-);
+class RedditPage extends Component {
+    render() {
+        return (
+            <div>
+                <Helmet title='Reddit-Redux' />
+                <h1>This is Redux's Reddit API Example</h1>
+                <Reddit />
+            </div>
+        );
+    }
+}
 
 export default RedditPage;
