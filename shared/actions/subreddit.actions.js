@@ -11,6 +11,7 @@
 'use strict';
 
 import fetch from 'isomorphic-fetch';
+import { SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, RECEIVE_POSTS, REQUEST_POSTS } from '../constants';
 
 /*
 * Action Creators
@@ -18,28 +19,28 @@ import fetch from 'isomorphic-fetch';
 
 export const selectSubreddit = (subreddit) => {
     return {
-        type: 'SELECT_SUBREDDIT',
+        type: SELECT_SUBREDDIT,
         subreddit
     };
 };
 
 export const invalidateSubreddit = (subreddit) => {
     return {
-        type: 'INVALIDATE_SUBREDDIT',
+        type: INVALIDATE_SUBREDDIT,
         subreddit
     }
 };
 
 const requestPosts = (subreddit) => {
     return {
-        type: 'REQUEST_POSTS',
+        type: REQUEST_POSTS,
         subreddit
     }
 };
 
 const receivePosts = (subreddit, json) => {
     return {
-        type: 'RECEIVE_POSTS',
+        type: RECEIVE_POSTS,
         subreddit,
         posts: json.data.children.map(child => child.data),
         receivedAt: Date.now()

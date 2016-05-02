@@ -11,10 +11,11 @@
 'use strict';
 
 import { combineReducers } from 'redux';
+import { SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, RECEIVE_POSTS, REQUEST_POSTS } from '../constants';
 
 export const selectedSubreddit = (state = 'reactjs', action) => {
     switch (action.type) {
-        case 'SELECT_SUBREDDIT':
+        case SELECT_SUBREDDIT:
             return action.subreddit;
         default:
             return state;
@@ -27,16 +28,16 @@ const posts = (state = {
     items: []
 }, action) => {
     switch (action.type) {
-        case 'INVALIDATE_SUBREDDIT':
+        case INVALIDATE_SUBREDDIT:
             return Object.assign({}, state, {
                 didInvalidate: true
             });
-        case 'REQUEST_POSTS':
+        case REQUEST_POSTS:
             return Object.assign({}, state, {
                 isFetching: true,
                 didInvalidate: false
             });
-        case 'RECEIVE_POSTS':
+        case RECEIVE_POSTS:
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
@@ -50,9 +51,9 @@ const posts = (state = {
 
 export const postsBySubreddit = (state = {}, action) => {
     switch (action.type) {
-        case 'INVALIDATE_SUBREDDIT':
-        case 'RECEIVE_POSTS':
-        case 'REQUEST_POSTS':
+        case INVALIDATE_SUBREDDIT:
+        case RECEIVE_POSTS:
+        case REQUEST_POSTS:
             return Object.assign({}, state, {
                 [action.subreddit]: posts(state[action.subreddit], action)
             });
