@@ -17,8 +17,8 @@ import { App, HomePage, RedditPage, TodoPage } from './pages';
 const routes = (
     <Route path='/' component={App} >
         <IndexRoute component={HomePage} />
-        <Route path='/reddit' component={RedditPage} />
-        <Route path='/todo' component={TodoPage} />
+        <Route path='reddit' component={RedditPage} />
+        <Route path='todo' component={TodoPage} />
     </Route>
 );
 

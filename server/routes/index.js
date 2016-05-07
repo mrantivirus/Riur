@@ -11,12 +11,10 @@
 'use strict';
 
 // Packages
-import express from 'express';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
-let app = express();
 
 
 // Custom components
@@ -24,88 +22,64 @@ import App from '../../shared/components/app.component';
 import Html from '../../shared/containers/html.container';
 import createStore from '../../shared/store/createStore';
 import routes from '../../shared/routes';
-import { PORT } from '../config';
 
-app.use(express.static('static'));
 
 // API Routes
 import todos from './todo.routes';
-app.use('/api/todos', todos);
-// END API Routes
 
-// Webpack stuff
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from '../../webpack.config.dev';
 
-let compiler = webpack(webpackConfig);
-
-app.use(webpackDevMiddleware(compiler, {
-    hot: true,
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath
-}));
-
-app.use(webpackHotMiddleware(compiler));
-
-// END Webpack
-
-// Catch-all for React-Router
-// app.use('*', (req, res) => {
-//     const store = createStore();
+export default (app) => {
+    app.use('/api', todos);
     
-//     const asset = {
-//         javascript: {
-//             main: 'bundle.js'
-//         }
-//     };
-
-//     const appContent = renderToString(
-//         <Provider store={store}>
-//             <App />
-//         </Provider>
-//     ) 
     
-//     const isProd = process.env.NODE_ENV !== 'production' ? false : true;
-    
-//     res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
-// });
-
-app.use('*', (req, res, next) => {
-    match({ routes, location:req.url }, (err, redirectLocation, renderProps) => {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        
-        if (redirectLocation) {
-            return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-        }
-        
-        if (!renderProps) {
-            return next();
-        }
-        
-        const store = createStore();
-        
-        const asset = {
-            javascript: {
-                main: '/js/bundle.js'
+    // Catch-all for React Router
+    app.use((req, res, next) => {
+        match({ routes, location:req.url }, (err, redirectLocation, renderProps) => {
+            if (err) {
+                return res.status(500).send(err);
             }
-        };
+            
+            if (redirectLocation) {
+                return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+            }
+            
+            if (!renderProps) {
+                return next();
+            }
+            
+            // Create the redux store.
+            const store = createStore();
+            
+            // Retrieve the promises from React Router components that have a fetchData method.
+            //  We use this data to populate our store for server side rendering.
+            const fetchedData = renderProps.components
+                .filter(component => component.fetchData)
+                .map(component => component.fetchData(store, renderProps.params));
+            
+            // Wait until ALL promises are successful before rendering.
+            Promise.all(fetchedData)
+                .then(() => {
+                    const asset = {
+                        javascript: {
+                            main: '/js/bundle.js'
+                        }
+                    };
+                    
+                    const appContent = renderToString(
+                        <Provider store={store}>
+                            <RouterContext {...renderProps} />
+                        </Provider>
+                    ) 
+                    
+                    const isProd = process.env.NODE_ENV !== 'production' ? false : true;
+                    
+                    res.send('<!doctype html>' + renderToStaticMarkup(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+                })
+                .catch((err) => {
+                    // TODO: Perform better error logging.
+                    console.log(err);
+                });
+        });
+    }); 
+};
 
-        const appContent = renderToString(
-            <Provider store={store}>
-                <RouterContext {...renderProps} />
-            </Provider>
-        ) 
-        
-        const isProd = process.env.NODE_ENV !== 'production' ? false : true;
-        
-        res.send('<!doctype html>' + renderToString(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
-    });
-});
-
-app.listen(PORT, () => {
-    console.log(`Riur is listening on port ${PORT}`);
-});

@@ -11,10 +11,9 @@
 'use strict';
 
 import { Router } from 'express';
-
 const router = new Router();
 
-router.get('/', function (req, res) {
+router.get('/todos', function (req, res) {
     res.send({text: 'first!', isCompleted: false});
 });
 

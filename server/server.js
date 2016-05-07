@@ -10,6 +10,38 @@
 
 'use strict'
 
-// Initializes express and sets the routes
-import routes from './routes';
+// Initialize server modules
+import express from 'express';
+const app = express();
 
+import routes from './routes';
+import { ENV, PORT } from './config';
+
+
+// Webpack stuff
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import webpackConfig from '../webpack.config.dev';
+
+if (!ENV.isProduction) {
+    const compiler = webpack(webpackConfig);
+
+    app.use(webpackDevMiddleware(compiler, {
+        hot: true,
+        noInfo: true,
+        publicPath: webpackConfig.output.publicPath
+    }));
+
+    app.use(webpackHotMiddleware(compiler));
+}
+// END Webpack
+
+// Express configs
+app.use(express.static('static'));
+routes(app);
+// END Express configs
+
+app.listen(PORT, () => {
+    console.log(`Riur is listening on port ${PORT}`);
+});

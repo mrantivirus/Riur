@@ -12,43 +12,48 @@
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions';
+import { selectSubreddit, fetchPostsIfNeeded, fetchPosts, invalidateSubreddit } from '../actions';
 import Picker from '../components/picker.component';
 import Posts from '../components/posts.component';
 
 class Reddit extends Component {
     constructor(props) {
-        super(props)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleRefreshClick = this.handleRefreshClick.bind(this)
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleRefreshClick = this.handleRefreshClick.bind(this);
+    }
+    
+    static fetchData(store) {
+        const { selectedSubreddit } = store.getState();
+        return store.dispatch(fetchPosts(selectedSubreddit));
     }
 
     componentDidMount() {
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        const { dispatch, selectedSubreddit } = this.props;
+        dispatch(fetchPostsIfNeeded(selectedSubreddit));
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedSubreddit !== this.props.selectedSubreddit) {
-            const { dispatch, selectedSubreddit } = nextProps
-            dispatch(fetchPostsIfNeeded(selectedSubreddit))
+            const { dispatch, selectedSubreddit } = nextProps;
+            dispatch(fetchPostsIfNeeded(selectedSubreddit));
         }
     }
 
     handleChange(nextSubreddit) {
-        this.props.dispatch(selectSubreddit(nextSubreddit))
+        this.props.dispatch(selectSubreddit(nextSubreddit));
     }
 
     handleRefreshClick(e) {
-        e.preventDefault()
+        e.preventDefault();
 
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(invalidateSubreddit(selectedSubreddit))
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        const { dispatch, selectedSubreddit } = this.props;
+        dispatch(invalidateSubreddit(selectedSubreddit));
+        dispatch(fetchPostsIfNeeded(selectedSubreddit));
     }
 
     render() {
-        const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
+        const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props;
         return (
             <div>
                 <Picker value={selectedSubreddit}
@@ -80,9 +85,9 @@ class Reddit extends Component {
                     </div>
                 }
             </div>
-        )
+        );
     }
-}
+};
 
 Reddit.propTypes = {
     selectedSubreddit: PropTypes.string.isRequired,
@@ -90,10 +95,10 @@ Reddit.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
-}
+};
 
 function mapStateToProps(state) {
-    const { selectedSubreddit, postsBySubreddit } = state
+    const { selectedSubreddit, postsBySubreddit } = state;
     const {
         isFetching,
         lastUpdated,
@@ -101,14 +106,14 @@ function mapStateToProps(state) {
     } = postsBySubreddit[selectedSubreddit] || {
         isFetching: true,
         items: []
-    }
+    };
 
     return {
         selectedSubreddit,
         posts,
         isFetching,
         lastUpdated
-    }
+    };
 }
 
-export default connect(mapStateToProps)(Reddit)
+export default connect(mapStateToProps)(Reddit);

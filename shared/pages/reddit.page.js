@@ -16,11 +16,16 @@ import Helmet from 'react-helmet';
 import Reddit from '../containers/reddit.container';
 
 class RedditPage extends Component {
+    static fetchData (store, params) {
+        // Return a promise to be consumed by the server.
+        return Reddit.fetchData(store);
+    }
+    
     render() {
         return (
             <div>
                 <Helmet title='Reddit-Redux' />
-                <h1>This is Redux's Reddit API Example</h1>
+                <h1>Redux's Reddit API Example</h1>
                 <Reddit />
             </div>
         );
