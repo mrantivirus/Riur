@@ -10,19 +10,20 @@
 
 'use strict'
 
-// Initialize server modules
+/* Initialize server modules */
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import responseTime from 'response-time';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
+import responseTime from 'response-time';
 
 import routes from './routes';
-import { ENV, PORT, SECRET } from './config';
+import { DATABASE_URL, ENV, PORT, SECRET } from './config';
 
 
-// Express configs
+/* Express configs */
 const app = express();
 
 // For your app, you may want to consider using a CDN.
@@ -39,7 +40,16 @@ app.use(morgan(ENV.isProduction ? 'combined' : 'dev'));
 routes(app);
 // END Express configs
 
-// Webpack stuff
+mongoose.connect(DATABASE_URL, (err) => {
+    if (err) {
+        console.log('Please make sure mongod is running...');
+        console.log(err);
+    }
+    
+    console.log('Database is connected...');
+});
+
+/* Webpack stuff */
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -59,5 +69,5 @@ if (!ENV.isProduction) {
 // END Webpack
 
 app.listen(PORT, () => {
-    console.log(`Riur is listening on port ${PORT}`);
+    console.log(`Riur is listening on port ${PORT}...`);
 });

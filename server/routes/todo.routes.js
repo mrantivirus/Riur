@@ -13,8 +13,9 @@
 import { Router } from 'express';
 const router = new Router();
 
-router.get('/todos', function (req, res) {
-    res.send({text: 'first!', isCompleted: false});
-});
+import { todoController } from '../controllers';
+
+router.get('/todos', todoController.getTodos);
+router.post('/todos', todoController.postTodos);
 
 export default router;
