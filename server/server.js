@@ -12,11 +12,32 @@
 
 // Initialize server modules
 import express from 'express';
-const app = express();
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import responseTime from 'response-time';
+import morgan from 'morgan';
 
 import routes from './routes';
-import { ENV, PORT } from './config';
+import { ENV, PORT, SECRET } from './config';
 
+
+// Express configs
+const app = express();
+
+// For your app, you may want to consider using a CDN.
+app.use(express.static('static'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(compression());
+app.use(cookieParser(SECRET, {
+    secure: false, // Set to true if you have HTTPS set up
+    httpOnly: true
+}));
+app.use(responseTime());
+app.use(morgan(ENV.isProduction ? 'combined' : 'dev'));
+routes(app);
+// END Express configs
 
 // Webpack stuff
 import webpack from 'webpack';
@@ -36,11 +57,6 @@ if (!ENV.isProduction) {
     app.use(webpackHotMiddleware(compiler));
 }
 // END Webpack
-
-// Express configs
-app.use(express.static('static'));
-routes(app);
-// END Express configs
 
 app.listen(PORT, () => {
     console.log(`Riur is listening on port ${PORT}`);

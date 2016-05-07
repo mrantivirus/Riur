@@ -23,6 +23,7 @@ export const ENV = environment[process.env.NODE_ENV || 'development'];
 export const PORT = process.env.PORT || 4000;
 export const DATABASE_URL = 'mongodb://localhost/riur';
 export const HOST = process.env.HOST || 'localhost';
+export const SECRET = process.env.SECRET || '75caf772-a5af-4b1a-9104-ffb87773ddc7';
 export const HTML = {
     head: {
         title: 'Riur Example',
