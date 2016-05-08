@@ -14,28 +14,26 @@ import { Todo } from '../models';
 
 const todoController = {
     getTodos: (req, res) => {
-        Todo.find().lean().exec((err, todos) => {
+        Todo.find().exec((err, todos) => {
             if (err) {
                 // TODO: Do better logging for db errors
                 return console.log(err);
             }
             
-            res.send(todos);
+            return res.send(todos);
         });
     },
     
     postTodos: (req, res) => {
         Todo.create({
-            id: req.body.id,
-            isCompleted: req.body.isCompleted,
             text: req.body.text
-        }).exec((err, todo) => {
-            if (err) {
-                // TODO: Do better logging for db errors
-                return console.log(err);
-            }
-            
-            res.status(200).end();
+        }).then((todo) => {
+            console.log('should be my todo',todo);
+            return res.send(todo);
+        })
+        .catch((err) => {
+            // TODO: Do better logging for db errors
+            return console.log('this is an err',err);
         });
     }
 };
