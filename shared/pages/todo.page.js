@@ -12,12 +12,18 @@
 
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
 
 import Footer from '../components/footer.component';
 import AddTodo from '../containers/addTodo.container';
 import VisibleTodoList from '../containers/visibleTodoList.container';
+import { getTodos } from '../actions';
 
 class TodoPage extends Component {
+    componentDidMount() {
+        this.props.dispatch(getTodos());
+    }
+    
     render() {
         return (
             <div>
@@ -31,4 +37,4 @@ class TodoPage extends Component {
     }
 }
 
-export default TodoPage;
+export default connect()(TodoPage);

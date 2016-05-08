@@ -17,5 +17,6 @@ import { todoController } from '../controllers';
 
 router.get('/todos', todoController.getTodos);
 router.post('/todos', todoController.postTodos);
+router.post('/todos/:id/toggle', todoController.toggleTodo);
 
 export default router;

@@ -28,12 +28,31 @@ const todoController = {
         Todo.create({
             text: req.body.text
         }).then((todo) => {
-            console.log('should be my todo',todo);
             return res.send(todo);
         })
         .catch((err) => {
             // TODO: Do better logging for db errors
             return console.log('this is an err',err);
+        });
+    },
+    
+    toggleTodo: (req, res) => {
+        Todo.findOne({_id:req.params.id}).exec((err, todo) => {
+            if (err) {
+                // TODO: Do better logging for db errors
+                return console.log(err);
+            }
+            
+            todo.isCompleted = !todo.isCompleted;
+            todo.save((err) => {
+                if (err) {
+                    // TODO: Do better logging for db errors
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                
+                return res.send(todo);
+            });
         });
     }
 };
