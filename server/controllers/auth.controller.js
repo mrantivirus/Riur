@@ -10,25 +10,32 @@
 
 'use strict';
 
+import bcrypt from 'bcrypt';
 import { Auth } from '../models';
 import jwt from '../utils/jwt';
 
 const authController = {
     login: (req, res) => {
-        Auth.find({email:req.body.email}).exec((err, user) => {
+        Auth.findOne({email:req.body.email}).exec((err, user) => {
             if (err) {
                 // TODO: Do better logging for db errors
                 return console.log(err);
             }
             
+            // No user account was found
             if (!user) {
-                return res.status(401).send('That email address is not regiestered.');
+                return res.status(403).send('That email address is not regiestered.');
             }
             
-            // TODO: Check password
-            
-            res.cookie('token', jwt.sign(user), { secure: true, httpOnly: true, maxAge: 600000});
-            return res.send(user);
+            // Check if the password is the same
+            bcrypt.compare(req.body.password, user.password, (err, valid) => {
+                if (!valid) {
+                    return res.status(403).send('Your password is incorrect.');
+                }
+                
+                res.cookie('token', jwt.sign(user), { secure: true, httpOnly: true, maxAge: 600000});
+                return res.send(user);
+            });
         });
     },
     
@@ -43,29 +50,27 @@ const authController = {
                 return console.log(err);
             }
             
+            // There is an account with that email address
             if (user) {
                 return res.status(401).send('This email address is already registered.');
             }
             
-            Auth.create({
-                email: req.body.email,
-                passwork: req.body.password,
-                dateRegistered: req.body.date
-            }).then((user) => {
-                return res.send(user);
-            }).catch((err) => {
-                // TODO: Do better logging for db errors
-                return console.log(err);
-            });
-            
-            Auth.create((err) => {
+            bcrypt.hash(req.body.password, 15, (err, hash) => {
                 if (err) {
-                    // TODO: Do better logging for db errors
-                    console.log(err);
-                    return res.status(500).send(err);
+                    return res.status(500).send('There was a problem creating your account.');
                 }
                 
-                return res.send(todo);
+                Auth.create({
+                    email: req.body.email,
+                    password: hash,
+                    dateRegistered: req.body.date // if this is empty, then it uses the server time
+                }).then((user) => {
+                    res.cookie('token', jwt.sign(user), { secure: true, httpOnly: true, maxAge: 600000});                
+                    return res.send(user);
+                }).catch((err) => {
+                    // TODO: Do better logging for db errors
+                    return console.log(err);
+                });
             });
         });
     }

@@ -15,8 +15,8 @@ const router = new Router();
 
 import { authController } from '../controllers';
 
-router.get('/login', authController.login);
-router.post('/logout', authController.logout);
+router.post('/login', authController.login);
+router.get('/logout', authController.logout);
 router.post('/signup', authController.signup);
 
 export default router;

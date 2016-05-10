@@ -42,6 +42,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.8.0",
+    "bcrypt": "^0.8.6",
     "body-parser": "^1.15.1",
     "compression": "^1.6.1",
     "cookie-parser": "^1.4.1",
