@@ -11,6 +11,9 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
+import Login from './login.component';
+import Logout from './logout.component';
+import { loginUser, logoutUser } from '../actions';
 
 class Navbar extends Component {
     constructor (props) {
@@ -18,6 +21,10 @@ class Navbar extends Component {
     };
     
     render () {
+        console.log(this.props)
+        const { dispatch, auth } = this.props;
+        const { isAuthenticated, errorMessage } = auth;
+        
         return (
             <nav className='navbar navbar-default'>
                 <div className='container-fluid'>
@@ -41,7 +48,20 @@ class Navbar extends Component {
                                 );
                             })}
                         </ul>
+                        
+                        <div className='pull-right'>
+                            {!isAuthenticated && 
+                                <Login 
+                                errorMessage={errorMessage}
+                                onLoginClick={creds => dispatch(loginUser(creds))} />
+                            }
+                            
+                            {isAuthenticated &&
+                                <Logout onLogoutClick={() => dispatch(logoutUser())} />
+                            }
+                        </div>
                     </div>
+                    
                 </div>
             </nav>
         );

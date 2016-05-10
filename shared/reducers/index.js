@@ -11,11 +11,13 @@
 'use strict'
 
 import { combineReducers } from 'redux';
+import auth from './auth.reducer';
 import todos from './todos.reducer';
 import visibilityFilter from './visibilityFilter.reducer';
 import { postsBySubreddit, selectedSubreddit } from './subreddit.reducer';
 
 const rootReducer = combineReducers({
+    auth,
     todos,
     visibilityFilter,
     postsBySubreddit,
