@@ -10,7 +10,8 @@
 
 'use strict';
 
-import fetch from 'isomorphic-fetch';
+//import fetch from 'isomorphic-fetch';
+import fetch from '../utils/fetch';
 import { RECEIVE_TODOS, ADD_TODO, ERROR, TOGGLE_TODO } from '../constants';
 
 /*
@@ -18,18 +19,9 @@ import { RECEIVE_TODOS, ADD_TODO, ERROR, TOGGLE_TODO } from '../constants';
 */
 export const addTodo = (text) => {
     return (dispatch) => {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        return fetch.post('/api/todos', JSON.stringify({
                 text: text
-            })
-        };
-        
-        return fetch('/api/todos', options)
+            }))
             .then(response => response.json())
             .then(todo => dispatch(_addTodo(todo)))
             .catch(err => dispatch(_errorHandler(err)));
@@ -47,7 +39,7 @@ const _addTodo = (todo) => {
 
 export const getTodos = () => {
     return (dispatch) => {
-        return fetch('/api/todos')
+        return fetch.get('/api/todos')
             .then(response => response.json())
             .then(todo => dispatch(_receiveTodos(todo)))
             .catch(err => dispatch(_errorHandler(err)));
