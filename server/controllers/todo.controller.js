@@ -32,7 +32,7 @@ const todoController = {
         })
         .catch((err) => {
             // TODO: Do better logging for db errors
-            return console.log('this is an err',err);
+            return console.log(err);
         });
     },
     

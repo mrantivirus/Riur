@@ -21,6 +21,7 @@ import responseTime from 'response-time';
 
 import routes from './routes';
 import { DATABASE_URL, ENV, PORT, SECRET } from './config';
+import jwt from './utils/jwt';
 
 
 /* Express configs */
@@ -37,6 +38,7 @@ app.use(cookieParser(SECRET, {
 }));
 app.use(responseTime());
 app.use(morgan(ENV.isProduction ? 'combined' : 'dev'));
+app.use(jwt.extractTokenFromCookie);
 routes(app);
 // END Express configs
 
@@ -44,6 +46,9 @@ mongoose.connect(DATABASE_URL, (err) => {
     if (err) {
         console.log('Please make sure mongod is running...');
         console.log(err);
+        
+        // In your project, you can prevent your server from 
+        //  starting if mongo isn't running. I choose not to.
     }
     
     console.log('Database is connected...');
