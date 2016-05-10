@@ -10,8 +10,10 @@
 
 'use strict';
 
+import Auth from './auth.model';
 import Todo from './todo.model';
 
 export {
+    Auth,
     Todo
 };

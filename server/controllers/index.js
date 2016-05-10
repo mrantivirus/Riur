@@ -10,8 +10,10 @@
 
 'use strict';
 
+import authController from './auth.controller';
 import todoController from './todo.controller';
 
 export {
+    authController,
     todoController
 };

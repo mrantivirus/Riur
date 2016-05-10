@@ -25,10 +25,12 @@ import routes from '../../shared/routes';
 
 
 // API Routes
+import auth from './auth.routes';
 import todos from './todo.routes';
 
 
 export default (app) => {
+    app.use('/auth', auth);
     app.use('/api', todos);
     
     
