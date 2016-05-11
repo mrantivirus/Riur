@@ -12,9 +12,11 @@
 
 // Packages
 import React from 'react';
+import { dispatch } from 'redux';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
+import jwt from '../utils/jwt';
 
 
 // Custom components
@@ -22,6 +24,7 @@ import App from '../../shared/components/app.component';
 import Html from '../../shared/containers/html.container';
 import createStore from '../../shared/store/createStore';
 import routes from '../../shared/routes';
+import { serverLogin } from '../../shared/actions';
 
 
 // API Routes
@@ -32,56 +35,75 @@ import todos from './todo.routes';
 export default (app) => {
     app.use('/auth', auth);
     app.use('/api', todos);
-    
-    
+
+
     // Catch-all for React Router
     app.use((req, res, next) => {
-        match({ routes, location:req.url }, (err, redirectLocation, renderProps) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            
-            if (redirectLocation) {
-                return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-            }
-            
-            if (!renderProps) {
-                return next();
-            }
-            
-            // Create the redux store.
-            const store = createStore();
-            
-            // Retrieve the promises from React Router components that have a fetchData method.
-            //  We use this data to populate our store for server side rendering.
-            const fetchedData = renderProps.components
-                .filter(component => component.fetchData)
-                .map(component => component.fetchData(store, renderProps.params));
-            
-            // Wait until ALL promises are successful before rendering.
-            Promise.all(fetchedData)
-                .then(() => {
-                    const asset = {
-                        javascript: {
-                            main: '/js/bundle.js'
-                        }
-                    };
-                    
-                    const appContent = renderToString(
-                        <Provider store={store}>
-                            <RouterContext {...renderProps} />
-                        </Provider>
-                    ) 
-                    
-                    const isProd = process.env.NODE_ENV !== 'production' ? false : true;
-                    
-                    res.send('<!doctype html>' + renderToStaticMarkup(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+        // Create the redux store.
+        const store = createStore();
+        
+        // Check is a token was sent from the client
+        if (typeof req.token !== 'undefined') {
+            // Verify that it's valid
+            jwt.verifyPromiseBased(req.token)
+                .then((contents) => {
+                    // Token is valid, dispatch authentication
+                    store.dispatch(serverLogin(contents));
+                    doRouteMatching(req, res, next, store);
                 })
                 .catch((err) => {
-                    // TODO: Perform better error logging.
-                    console.log(err);
+                    console.log('Token err:', err);
+                    return req.status(401).send('There was an issue verifying your token.')
                 });
-        });
-    }); 
+        } else {
+            // Do normal react-router rendering
+            doRouteMatching(req, res, next, store);
+        }
+    });
 };
 
+const doRouteMatching = (req, res, next, store) => {
+    match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+
+        if (redirectLocation) {
+            return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        }
+
+        if (!renderProps) {
+            return next();
+        }
+        
+        // Retrieve the promises from React Router components that have a fetchData method.
+        //  We use this data to populate our store for server side rendering.
+        const fetchedData = renderProps.components
+            .filter(component => component.fetchData)
+            .map(component => component.fetchData(store, renderProps.params));
+
+        // Wait until ALL promises are successful before rendering.
+        Promise.all(fetchedData)
+            .then(() => {
+                const asset = {
+                    javascript: {
+                        main: '/js/bundle.js'
+                    }
+                };
+
+                const appContent = renderToString(
+                    <Provider store={store}>
+                        <RouterContext {...renderProps} />
+                    </Provider>
+                )
+
+                const isProd = process.env.NODE_ENV !== 'production' ? false : true;
+
+                res.send('<!doctype html>' + renderToStaticMarkup(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+            })
+            .catch((err) => {
+                // TODO: Perform better error logging.
+                console.log(err);
+            });
+    });
+};

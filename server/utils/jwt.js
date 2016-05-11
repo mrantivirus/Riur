@@ -27,6 +27,20 @@ export default {
         // Verify is ASynchronous, so handle code in callback.
         webToken.verify(token, SECRET, callback);
     },
+    
+    verifyPromiseBased: (token) => {
+        return new Promise((resolve, reject) => {
+            // Verify is ASynchronous, so handle code in callback.
+            //  Then reject or resolve for the promise.
+            webToken.verify(token, SECRET, (err, tokenContents) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(tokenContents);
+                }
+            });
+        });
+    },
 
     // Decodes a token without verification, try to avoid using.
     decode: (token) => {

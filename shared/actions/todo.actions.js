@@ -72,15 +72,7 @@ const _toggleTodo = (todo) => {
 
 export const toggleTodo = (id) => {
     return (dispatch) => {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
-        
-        return fetch(`/api/todos/${id}/toggle`, options)
+        return fetch.post(`/api/todos/${id}/toggle`)
             .then(response => response.json())
             .then(todo => dispatch(_toggleTodo(todo)))
             .catch(err => dispatch(_errorHandler(err)));

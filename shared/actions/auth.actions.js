@@ -61,6 +61,11 @@ export const loginUser = (creds) => {
     };
 };
 
+export const serverLogin = (user) => {
+    return (dispatch) => {
+        return dispatch(receiveLogin(user));
+    };
+};
 
 
 

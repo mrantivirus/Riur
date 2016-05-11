@@ -33,7 +33,7 @@ const authController = {
                     return res.status(403).send('Your password is incorrect.');
                 }
                 
-                res.cookie('token', jwt.sign(user), { secure: true, httpOnly: true, maxAge: 600000});
+                res.cookie('token', jwt.sign(user), { signed: true, httpOnly: true, maxAge: 600000});
                 return res.send(user);
             });
         });
@@ -65,7 +65,7 @@ const authController = {
                     password: hash,
                     dateRegistered: req.body.date // if this is empty, then it uses the server time
                 }).then((user) => {
-                    res.cookie('token', jwt.sign(user), { secure: true, httpOnly: true, maxAge: 600000});                
+                    res.cookie('token', jwt.sign(user), { signed: true, httpOnly: true, maxAge: 600000});                
                     return res.send(user);
                 }).catch((err) => {
                     // TODO: Do better logging for db errors
