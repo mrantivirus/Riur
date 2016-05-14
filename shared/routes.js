@@ -14,12 +14,26 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import { App, HomePage, RedditPage, TodoPage } from './pages';
 
-const routes = (
-    <Route path='/' component={App} >
-        <IndexRoute component={HomePage} />
-        <Route path='reddit' component={RedditPage} />
-        <Route path='todo' component={TodoPage} />
-    </Route>
-);
+const appRoutes = (store) => {
+    const requireAuth = (nextState, replace) => {
+        const { auth } = store.getState();
+        
+        if (!auth.isAuthenticated) {
+            replace({
+                pathname: '/',
+                state: { nextPathname: nextState.location.pathname }
+            });
+        }
+    };
+    
+    // Returns the routes for react-router
+    return (
+        <Route path='/' component={App} >
+            <IndexRoute component={HomePage} />
+            <Route path='reddit' component={RedditPage} />
+            <Route path='todo' onEnter={requireAuth} component={TodoPage} />
+        </Route>
+    );
+};
 
-export default routes;
+export default appRoutes;

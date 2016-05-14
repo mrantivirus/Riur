@@ -13,7 +13,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { HTML } from '../../server/config';
+import { HTML } from '../config/helmet.config';
 import SiteNavbar from '../containers/siteNavbar.container';
 
 class App extends Component {
@@ -22,7 +22,7 @@ class App extends Component {
             <div>
                 <Helmet {...HTML.head}/>
                 <SiteNavbar auth={this.props.auth} dispatch={this.props.dispatch} {...this.props.location} />
-                { this.props.children }
+                {React.cloneElement(this.props.children, {auth: this.props.auth} )}
             </div>
         )
     }

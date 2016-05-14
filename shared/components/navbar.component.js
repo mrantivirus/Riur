@@ -16,14 +16,10 @@ import Logout from './logout.component';
 import { loginUser, logoutUser } from '../actions';
 
 class Navbar extends Component {
-    constructor (props) {
-        super(props);
-    };
-    
-    render () {
+    render() {
         const { dispatch, auth } = this.props;
         const { isAuthenticated, errorMessage } = auth;
-        
+
         return (
             <nav className='navbar navbar-default'>
                 <div className='container-fluid'>
@@ -36,7 +32,7 @@ class Navbar extends Component {
                         </button>
                         <a className='navbar-brand' href='/'>{this.props.brand}</a>
                     </div>
-                    
+
                     <div className='collapse navbar-collapse' id='collapsed-navbar'>
                         <ul className='nav navbar-nav'>
                             {this.props.links.map((val, index) => {
@@ -45,26 +41,31 @@ class Navbar extends Component {
                                         <a href={val.url}>{val.text}</a>
                                     </li>
                                 );
-                            })}
+                            }) }
                         </ul>
-                        
-                        <div className='pull-right'>
-                            {!isAuthenticated && 
-                                <Login 
-                                errorMessage={errorMessage}
-                                onLoginClick={creds => dispatch(loginUser(creds))} />
+
+                        <div className='navbar-right navbar-form'>
+                            {!isAuthenticated &&
+                                <Login
+                                    errorMessage={errorMessage}
+                                    onLoginClick={creds => dispatch(loginUser(creds)) } />
                             }
-                            
+
                             {isAuthenticated &&
-                                <Logout onLogoutClick={() => dispatch(logoutUser())} />
+                                <Logout onLogoutClick={() => dispatch(logoutUser()) } />
                             }
                         </div>
                     </div>
-                    
+
                 </div>
             </nav>
         );
     };
 };
+
+Navbar.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+}
 
 export default Navbar;

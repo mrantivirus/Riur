@@ -14,12 +14,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import createStore from '../shared/store/createStore';
 
 import routes from '../shared/routes';
 
-const store = createStore(window.__app_data);
-const history = browserHistory;
+const store = createStore(window.__app_data, browserHistory);
+const history = syncHistoryWithStore(browserHistory, store);
 
 if (window.__isProduction === false) {
     window.React = React; // Enable debugger
@@ -27,7 +28,7 @@ if (window.__isProduction === false) {
 
 render (
     <Provider store={store}>
-        <Router history={history} routes={routes} />
+        <Router history={history} routes={routes(store)} />
     </Provider>,
     document.getElementById('content')
 )

@@ -22,7 +22,7 @@ class Reddit extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
     }
-    
+
     static fetchData(store) {
         const { selectedSubreddit } = store.getState();
         return store.dispatch(fetchPosts(selectedSubreddit));

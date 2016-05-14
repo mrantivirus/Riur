@@ -11,6 +11,7 @@
 'use strict'
 
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import auth from './auth.reducer';
 import todos from './todos.reducer';
 import visibilityFilter from './visibilityFilter.reducer';
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     todos,
     visibilityFilter,
     postsBySubreddit,
-    selectedSubreddit
+    selectedSubreddit,
+    routing: routerReducer
 });
 
 export default rootReducer;

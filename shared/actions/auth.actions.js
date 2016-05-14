@@ -10,6 +10,7 @@
 
 'use strict';
 
+import { replace } from 'react-router-redux';
 import fetch from '../utils/fetch';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -48,19 +49,22 @@ export const loginUser = (creds) => {
         dispatch(requestLogin(creds));
         
         return fetch.post('/auth/login', JSON.stringify(creds))
+            .then(handleErrors)
             .then(response => response.json())
-            .then((user) => {
-                // if (!response.ok) {
-                //     dispatch(loginError(user.message));
-                //     return Promise.reject(user);
-                // }
-                
+            .then(user => {
                 dispatch(receiveLogin(user));
+                
+                // You probably want to dispatch a toast and delay redirect
+                dispatch(replace('/todo'));
             })
-            .catch(err => console.log('Error:', err));
+            .catch(err => {
+                dispatch(loginError(err.message));
+                return Promise.reject(err);
+            });
     };
 };
 
+// TODO: Make this server only
 export const serverLogin = (user) => {
     return (dispatch) => {
         return dispatch(receiveLogin(user));
@@ -89,15 +93,37 @@ const receiveLogout = () => {
     }
 }
 
+const logoutError = (message) => {
+    return {
+        type: LOGOUT_FAILURE,
+        isFetching: false,
+        isAuthenticated: false,
+        message
+    };
+};
+
 export const logoutUser = () => {
     return ( dispatch ) => {
         dispatch(requestLogout());
         
         return fetch.get('/auth/logout')
-            .then(response => response.json())
+            .then(handleErrors)
             .then((response) => {
                 dispatch(receiveLogout());
+                
+                // You probably want to dispatch a toast and delay redirect                
+                dispatch(replace('/'));
             })
-            .catch(err => console.log('Error:', err));
+            .catch(err => {
+                dispatch(logoutError(err.message));
+                return Promise.reject(err);
+            });
     };
+};
+
+const handleErrors = (response) => {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
 };

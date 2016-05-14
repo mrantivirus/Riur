@@ -11,12 +11,13 @@
 'use strict';
 
 import { createStore, applyMiddleware } from 'redux';
+import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import reducers from '../reducers';
-import { selectSubreddit, fetchPosts } from '../actions'
+import { selectSubreddit, fetchPosts } from '../actions';
 
-export default function createReduxStore(initialState = {}) {
-    const store = createStore(reducers, initialState, applyMiddleware(thunk));    
+export default function createReduxStore(initialState = {}, history) {
+    const store = createStore(reducers, initialState, applyMiddleware(thunk, routerMiddleware(history)));    
     
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers

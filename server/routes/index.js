@@ -15,7 +15,7 @@ import React from 'react';
 import { dispatch } from 'redux';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { match, RouterContext } from 'react-router';
+import { match, RouterContext, createMemoryHistory } from 'react-router';
 import jwt from '../utils/jwt';
 
 
@@ -39,8 +39,10 @@ export default (app) => {
 
     // Catch-all for React Router
     app.use((req, res, next) => {
-        // Create the redux store.
-        const store = createStore();
+        // Create the redux store and history
+        //  NOTE: Using syncHistoryWithStore on the server causes double history
+        const history = createMemoryHistory(req.originalUrl);
+        const store = createStore({}, history);
         
         // Check is a token was sent from the client
         if (typeof req.token !== 'undefined') {
@@ -49,7 +51,7 @@ export default (app) => {
                 .then((contents) => {
                     // Token is valid, dispatch authentication
                     store.dispatch(serverLogin(contents));
-                    doRouteMatching(req, res, next, store);
+                    doRouteMatching(req, res, next, store, history);
                 })
                 .catch((err) => {
                     console.log('Token err:', err);
@@ -57,13 +59,13 @@ export default (app) => {
                 });
         } else {
             // Do normal react-router rendering
-            doRouteMatching(req, res, next, store);
+            doRouteMatching(req, res, next, store, history);
         }
     });
 };
 
-const doRouteMatching = (req, res, next, store) => {
-    match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+const doRouteMatching = (req, res, next, store, history) => {
+    match({ history, routes:routes(store), location: req.originalUrl }, (err, redirectLocation, renderProps) => {
         if (err) {
             return res.status(500).send(err);
         }
