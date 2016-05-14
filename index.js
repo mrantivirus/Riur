@@ -14,7 +14,6 @@ try {
 }
 
 require('babel-register')(config);
-//require('babel-polyfill');
 // END
 
 require('./server/server');
