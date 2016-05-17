@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    devtool: 'production',
     
     entry: [
         './client/client.js'
@@ -44,9 +43,11 @@ module.exports = {
             },
             'screw-ie8': true,
             output: {
-                comments: true,
+                comments: false,
                 semicolons: false,
-            }
+            },
+            mangle: true,
+            minimize: true
         }),
         new webpack.DefinePlugin({
             'process.env': {

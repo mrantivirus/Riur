@@ -11,6 +11,7 @@
 'use strict';
 
 import { combineReducers } from 'redux';
+import { fromJS, List, Map } from 'immutable';
 import { SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, RECEIVE_POSTS, REQUEST_POSTS } from '../constants';
 
 export const selectedSubreddit = (state = 'reactjs', action) => {
@@ -22,43 +23,47 @@ export const selectedSubreddit = (state = 'reactjs', action) => {
     }
 };
 
-const posts = (state = {
+const initialPostsState = Map({
     isFetching: false,
     didInvalidate: false,
-    items: []
-}, action) => {
+    items: List()
+});
+
+const posts = (state = initialPostsState, action) => {
     switch (action.type) {
         case INVALIDATE_SUBREDDIT:
-            return Object.assign({}, state, {
+            return state.merge({
                 didInvalidate: true
             });
         case REQUEST_POSTS:
-            return Object.assign({}, state, {
+            return state.merge({
                 isFetching: true,
                 didInvalidate: false
             });
         case RECEIVE_POSTS:
-            return Object.assign({}, state, {
+            return state.merge({
                 isFetching: false,
                 didInvalidate: false,
                 items: action.posts,
                 lastUpdated: action.receivedAt
             });
         default:
-            return state;
+            return fromJS(state);
     }
 };
 
-export const postsBySubreddit = (state = {}, action) => {
+const initialSubredditState = Map();
+
+export const postsBySubreddit = (state = initialSubredditState, action) => {
     switch (action.type) {
         case INVALIDATE_SUBREDDIT:
         case RECEIVE_POSTS:
-        case REQUEST_POSTS:
-            return Object.assign({}, state, {
+        case REQUEST_POSTS:      
+            return state.merge({
                 [action.subreddit]: posts(state[action.subreddit], action)
             });
         default:
-            return state;
+            return fromJS(state);
     }
 };
 

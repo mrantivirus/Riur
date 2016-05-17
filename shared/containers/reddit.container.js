@@ -12,6 +12,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { List } from 'immutable';
 import { selectSubreddit, fetchPostsIfNeeded, fetchPosts, invalidateSubreddit } from '../actions';
 import Picker from '../components/picker.component';
 import Posts from '../components/posts.component';
@@ -73,13 +74,13 @@ class Reddit extends Component {
                         </a>
                     }
                 </p>
-                {isFetching && posts.length === 0 &&
+                {isFetching && posts.size === 0 &&
                     <h2>Loading...</h2>
                 }
-                {!isFetching && posts.length === 0 &&
+                {!isFetching && posts.size === 0 &&
                     <h2>Empty.</h2>
                 }
-                {posts.length > 0 &&
+                {posts.size > 0 &&
                     <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                         <Posts posts={posts} />
                     </div>
@@ -91,7 +92,7 @@ class Reddit extends Component {
 
 Reddit.propTypes = {
     selectedSubreddit: PropTypes.string.isRequired,
-    posts: PropTypes.array.isRequired,
+    posts: PropTypes.instanceOf(List).isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
@@ -99,15 +100,12 @@ Reddit.propTypes = {
 
 function mapStateToProps(state) {
     const { selectedSubreddit, postsBySubreddit } = state;
-    const {
-        isFetching,
-        lastUpdated,
-        items: posts
-    } = postsBySubreddit[selectedSubreddit] || {
-        isFetching: true,
-        items: []
-    };
-
+    
+    const subreddit = postsBySubreddit.get(selectedSubreddit);
+    const isFetching = subreddit.get('isFetching');
+    const lastUpdated = subreddit.get('lastUpdated');
+    const posts = subreddit.get('items');
+    
     return {
         selectedSubreddit,
         posts,

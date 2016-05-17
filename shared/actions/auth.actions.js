@@ -10,8 +10,9 @@
 
 'use strict';
 
-import { replace } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import fetch from '../utils/fetch';
+import { fromJS } from 'immutable';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -51,11 +52,13 @@ export const loginUser = (creds) => {
         return fetch.post('/auth/login', JSON.stringify(creds))
             .then(handleErrors)
             .then(response => response.json())
-            .then(user => {
+            .then(data => {
+                const user = fromJS(data);
+                
                 dispatch(receiveLogin(user));
                 
                 // You probably want to dispatch a toast and delay redirect
-                dispatch(replace('/todo'));
+                dispatch(push('/todo'));
             })
             .catch(err => {
                 dispatch(loginError(err.message));
@@ -112,7 +115,7 @@ export const logoutUser = () => {
                 dispatch(receiveLogout());
                 
                 // You probably want to dispatch a toast and delay redirect                
-                dispatch(replace('/'));
+                dispatch(push('/'));
             })
             .catch(err => {
                 dispatch(logoutError(err.message));

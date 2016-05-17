@@ -31,4 +31,4 @@ render (
         <Router history={history} routes={routes(store)} />
     </Provider>,
     document.getElementById('content')
-)
+);

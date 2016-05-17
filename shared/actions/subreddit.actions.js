@@ -38,11 +38,11 @@ const requestPosts = (subreddit) => {
     }
 };
 
-const receivePosts = (subreddit, json) => {
+const receivePosts = (subreddit, posts) => {
     return {
         type: RECEIVE_POSTS,
         subreddit,
-        posts: json.data.children.map(child => child.data),
+        posts: posts,
         receivedAt: Date.now()
     }
 };
@@ -58,19 +58,22 @@ export const fetchPosts = (subreddit) => {
             
             // We can dispatch as many times as we want
             // This time, to update the state with the results.
-            .then(json => dispatch(receivePosts(subreddit, json)));
+            .then(json => {
+                const redditData = json.data.children.map(child => child.data);
+                return dispatch(receivePosts(subreddit, redditData));
+            });
     };
 };
 
 const shouldFetchPosts = (state, subreddit) => {
-    const posts = state.postsBySubreddit[subreddit];
+    const posts = state.postsBySubreddit.get(subreddit);
     
     if (!posts) {
         return true;
-    } else if (posts.isFetching) {
+    } else if (posts.get('isFetching')) {
         return false;
     } else {
-        return posts.didInvalidate;
+        return posts.get('didInvalidate');
     }
 };
 
