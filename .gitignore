@@ -22,6 +22,7 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 static/js/bundle.js
+static/js/common.js
 
 # Dependency directory
 node_modules

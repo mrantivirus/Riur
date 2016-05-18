@@ -34,7 +34,9 @@ export const HTML = {
         ],
         script: [
             { src:'https://code.jquery.com/jquery-1.12.3.min.js', type:'text/javascript'},
-            { src:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', type:'text/javascript'}
+            { src:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', type:'text/javascript'},
+            { src:'/js/common.js', type:'text/javascript'},            
+            { src:'/js/bundle.js', type:'text/javascript'},
         ]
     }
 };

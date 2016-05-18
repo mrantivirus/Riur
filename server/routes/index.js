@@ -26,7 +26,6 @@ import createStore from '../../shared/store/createStore';
 import routes from '../../shared/routes';
 import { serverLogin } from '../../shared/actions';
 
-
 // API Routes
 import auth from './auth.routes';
 import todos from './todo.routes';
@@ -87,12 +86,6 @@ const doRouteMatching = (req, res, next, store, history) => {
         // Wait until ALL promises are successful before rendering.
         Promise.all(fetchedData)
             .then(() => {
-                const asset = {
-                    javascript: {
-                        main: '/js/bundle.js'
-                    }
-                };
-
                 const appContent = renderToString(
                     <Provider store={store}>
                         <RouterContext {...renderProps} />
@@ -101,7 +94,7 @@ const doRouteMatching = (req, res, next, store, history) => {
 
                 const isProd = process.env.NODE_ENV !== 'production' ? false : true;
 
-                res.send('<!doctype html>' + renderToStaticMarkup(<Html assets={asset} content={appContent} store={store} isProd={isProd} />));
+                res.send('<!doctype html>' + renderToStaticMarkup(<Html content={appContent} store={store} isProd={isProd} />));
             })
             .catch((err) => {
                 // TODO: Perform better error logging.
