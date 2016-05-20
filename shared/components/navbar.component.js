@@ -11,6 +11,7 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
+import { withRouter, Link } from 'react-router';
 import Login from './login.component';
 import Logout from './logout.component';
 import { loginUser, logoutUser } from '../actions';
@@ -30,15 +31,15 @@ class Navbar extends Component {
                             <span className='icon-bar'></span>
                             <span className='icon-bar'></span>
                         </button>
-                        <a className='navbar-brand' href='/'>{this.props.brand}</a>
+                        <Link className='navbar-brand' to='/'>{this.props.brand}</Link>
                     </div>
 
                     <div className='collapse navbar-collapse' id='collapsed-navbar'>
                         <ul className='nav navbar-nav'>
                             {this.props.links.map((val, index) => {
                                 return (
-                                    <li key={index} className={this.props.pathname === val.url ? 'active' : ''}>
-                                        <a href={val.url}>{val.text}</a>
+                                    <li key={index} className={this.props.router.isActive(val.url) ? "active" : ""} >
+                                        <Link to={val.url}>{val.text}</Link>
                                     </li>
                                 );
                             }) }
@@ -66,6 +67,12 @@ class Navbar extends Component {
 Navbar.propTypes = {
     dispatch: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
-}
+};
 
-export default Navbar;
+// Navbar.contextTypes = {
+//     router: function () {
+//     return React.PropTypes.func.isRequired;
+//   }
+// };
+
+export default withRouter(Navbar);

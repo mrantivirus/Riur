@@ -13,14 +13,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { HTML } from '../config/helmet.config';
+import { HTML as htmlProps } from '../config/helmet.config';
 import SiteNavbar from '../containers/siteNavbar.container';
 
 class App extends Component {
     render () {
         return (
             <div>
-                <Helmet {...HTML.head}/>
+                <Helmet {...htmlProps.head}/>
                 <SiteNavbar auth={this.props.auth} dispatch={this.props.dispatch} {...this.props.location} />
                 {React.cloneElement(this.props.children, {auth: this.props.auth} )}
             </div>

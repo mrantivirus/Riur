@@ -32,7 +32,8 @@ export const HTML = {
         link: [
             { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' }
         ],
-        script: [
+        // Plural so react-helmet doesn't hijack rendering this and put it in the <head>
+        scripts: [
             { src:'https://code.jquery.com/jquery-1.12.3.min.js', type:'text/javascript'},
             { src:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', type:'text/javascript'},
             { src:'/js/common.js', type:'text/javascript'},            
