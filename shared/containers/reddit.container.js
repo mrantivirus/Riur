@@ -102,9 +102,9 @@ function mapStateToProps(state) {
     const { selectedSubreddit, postsBySubreddit } = state;
     
     const subreddit = postsBySubreddit.get(selectedSubreddit);
-    const isFetching = subreddit.get('isFetching');
-    const lastUpdated = subreddit.get('lastUpdated');
-    const posts = subreddit.get('items');
+    const isFetching = subreddit ? subreddit.get('isFetching') : false;
+    const lastUpdated = subreddit ? subreddit.get('lastUpdated') : Date.now();
+    const posts = subreddit ? subreddit.get('items') : List();
     
     return {
         selectedSubreddit,
