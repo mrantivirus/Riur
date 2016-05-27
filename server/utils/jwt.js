@@ -72,7 +72,7 @@ export default {
     extractTokenFromCookie: (request, response, next) => {
         try {
             // Get the cookie, then pull the token            
-            request.token = request.signedCookies.token || request.cookies.token;            
+            request.token = request.signedCookies.token || request.cookies.token;  
         } catch (err) {
             // Probably trying to access something that was undefined
             console.log(err);

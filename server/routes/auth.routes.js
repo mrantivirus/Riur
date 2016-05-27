@@ -16,6 +16,7 @@ const router = new Router();
 import { authController } from '../controllers';
 
 router.post('/login', authController.login);
+router.post('/facebook/login', authController.fbLogin);
 router.get('/logout', authController.logout);
 router.post('/signup', authController.signup);
 

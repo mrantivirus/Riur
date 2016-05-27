@@ -14,6 +14,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter, Link } from 'react-router';
 import Login from './login.component';
 import Logout from './logout.component';
+import FacebookAuth from './facebookAuth.component';
 import { loginUser, logoutUser } from '../actions';
 
 class Navbar extends Component {
@@ -47,11 +48,14 @@ class Navbar extends Component {
 
                         <div className='navbar-right navbar-form'>
                             {!isAuthenticated &&
-                                <Login
-                                    errorMessage={errorMessage}
-                                    onLoginClick={creds => dispatch(loginUser(creds)) } />
+                                <div>
+                                    <Login
+                                        errorMessage={errorMessage}
+                                        onLoginClick={creds => dispatch(loginUser(creds)) } />
+                                    <FacebookAuth dispatch={dispatch} />    
+                            </div>                                
                             }
-
+                            
                             {isAuthenticated &&
                                 <Logout onLogoutClick={() => dispatch(logoutUser()) } />
                             }

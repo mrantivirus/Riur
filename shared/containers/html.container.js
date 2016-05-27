@@ -22,29 +22,29 @@ export default class Layout extends Component {
         store: PropTypes.object,
         isProd: PropTypes.bool
     }
-    
-    render () {
+
+    render() {
         const { content, store, isProd } = this.props;
         const head = Helmet.rewind();
         const attrs = head.htmlAttributes.toComponent();
-        
+
         return (
             <html {...attrs}>
                 <head>
-                    {head.base.toComponent()}
-                    {head.title.toComponent()}
-                    {head.meta.toComponent()}
-                    {head.link.toComponent()}
-                    
+                    {head.base.toComponent() }
+                    {head.title.toComponent() }
+                    {head.meta.toComponent() }
+                    {head.link.toComponent() }
+
                     <link rel='shortcut icon' href='/favicon.ico' />
                     <meta name='viewport' content='width=device-width, initial-scale=1' />
                 </head>
                 <body>
-                    <div id='content' dangerouslySetInnerHTML={{__html: content}} />
-                    <script dangerouslySetInnerHTML={{__html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}`}} />
+                    <div id='content' dangerouslySetInnerHTML={{ __html: content }} />
+                    <script dangerouslySetInnerHTML={{ __html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}` }} />
                     {htmlProps.head.scripts.map((val, i) => {
                         return <script src={val.src} type={val.type} key={i} />
-                    })}
+                    }) }
                 </body>
             </html>
         );

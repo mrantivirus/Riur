@@ -13,12 +13,14 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import auth from './auth.reducer';
+//import facebook from './facebook.reducer';
 import todos from './todos.reducer';
 import visibilityFilter from './visibilityFilter.reducer';
 import { postsBySubreddit, selectedSubreddit } from './subreddit.reducer';
 
 const rootReducer = combineReducers({
     auth,
+    //facebook,
     todos,
     visibilityFilter,
     postsBySubreddit,

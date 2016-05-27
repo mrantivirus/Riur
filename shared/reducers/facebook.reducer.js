@@ -5,45 +5,43 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule auth.reducer
+ * @providesModule facebook.reducer
  */
 
 'use strict'
 
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from '../actions';
+import { FB_LOGIN_REQUEST, FB_LOGIN_SUCCESS, FB_LOGIN_FAILURE } from '../actions';
 
-const auth = (state = {
+const facebookReducer = (state = {
     isFetching: false,
     isAuthenticated: false
 }, action) => {
     switch (action.type) {
-        case LOGIN_REQUEST:
+        case FB_LOGIN_REQUEST:
             return Object.assign({}, state, {
                 isFetching: true,
-                isAuthenticated: false,
-                user: action.creds
+                isAuthenticated: false
             });
-        case LOGIN_SUCCESS:
+        case FB_LOGIN_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
                 isAuthenticated: true,
-                errorMessage: '',
-                user: action.user
+                errorMessage: ''
             });
-        case LOGIN_FAILURE:
+        case FB_LOGIN_FAILURE:
             return Object.assign({}, state, {
                 isFetching: false,
                 isAuthenticated: false,
                 errorMessage: action.message
             });
-        case LOGOUT_SUCCESS:
-            return Object.assign({}, state, {
-                isFetching: true,
-                isAuthenticated: false
-            });
+        // case LOGOUT_SUCCESS:
+        //     return Object.assign({}, state, {
+        //         isFetching: true,
+        //         isAuthenticated: false
+        //     });
         default:
             return state;
     }
 };
 
-export default auth;
+export default facebookReducer;

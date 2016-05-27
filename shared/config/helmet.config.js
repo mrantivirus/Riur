@@ -18,7 +18,6 @@ export const HTML = {
         meta: [
             { charset: 'utf-8' },
             { name: 'description', content: 'A boilerplate to jumpstart your React lifestyle.' },
-            { property: 'og:site_name', content: 'Riur Example' },
             { property: 'og:image', content: 'https://facebook.github.io/react/img/logo_og.png' },
             { property: 'og:locale', content: 'en_US' },
             { property: 'og:title', content: 'Riur Example' },

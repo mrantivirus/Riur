@@ -14,20 +14,28 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const authSchema = new Schema({
-    email: { type: 'String', required: true },
-    password: { type: 'String', required: true },
-    dateRegistered: { type: 'Date', default: Date.now }
+    email: { type: 'String', required: false }, // False for social logins
+    password: { type: 'String', required: false }, // False for social logins
+    dateRegistered: { type: 'Date', default: Date.now },
+    facebook: {
+        userID: { type: 'String' },
+        accessToken: { type: 'String' },
+        name: { type: 'String' },
+        pictureURL: { type: 'String' }
+    }
 });
 
 authSchema.set('toJSON', {
     transform: function (doc, ret, options) {
         // Transform every document before returning the result
-        const newUser = {
+        let newUser = {
             email: ret.email,
-            password: ret.password,
             dateRegistered: ret.dateRegistered
         };
-        
+
+        // Set to a new variable instead of returning so we can merge other social media
+        newUser = mergeUserWithFacebook(newUser, ret);
+
         return newUser;
     }
 });
@@ -35,14 +43,31 @@ authSchema.set('toJSON', {
 authSchema.set('toObject', {
     transform: function (doc, ret, options) {
         // Transform every document before returning the result
-        const newUser = {
+        let newUser = {
             email: ret.email,
-            password: ret.password,
             dateRegistered: ret.dateRegistered
         };
-        
+
+        newUser = mergeUserWithFacebook(newUser, ret);
+
         return newUser;
     }
 });
+
+const mergeUserWithFacebook = (user, ret) => {
+    if (typeof ret.facebook === 'undefined') {
+        return user;
+    }
+
+    // Create a new merged object
+    return Object.assign({}, user, {
+        facebook: {
+            id: ret.facebook.userID,
+            accessToken: ret.facebook.accessToken,
+            name: ret.facebook.name,
+            photoURL: ret.facebook.pictureURL
+        }
+    });
+};
 
 export default mongoose.model('Auth', authSchema);

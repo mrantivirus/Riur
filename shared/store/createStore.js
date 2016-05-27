@@ -10,22 +10,33 @@
 
 'use strict';
 
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import reducers from '../reducers';
 import { selectSubreddit, fetchPosts } from '../actions';
 
-export default function createReduxStore(initialState = {}, history) {
-    const store = createStore(reducers, initialState, applyMiddleware(thunk, routerMiddleware(history)));    
-    
-    if (module.hot) {
-        // Enable Webpack hot module replacement for reducers
-        module.hot.accept('../reducers', () => {
-            const nextReducer = require('../reducers').default;
-            store.replaceReducer(nextReducer);
-        });
+
+const createEnhancers = (history) => {
+    if (process.env.NODE_ENV !== 'production') {
+        return compose(
+            applyMiddleware(thunk, routerMiddleware(history)),
+            require('../containers/reduxDevTool.container').default.instrument()
+        );
     }
     
+    return applyMiddleware(thunk, routerMiddleware(history));
+}
+
+export default function createReduxStore(initialState = {}, history) {
+    const store = createStore(reducers, initialState, createEnhancers(history));
+
+    if (process.env.NODE_ENV !== 'production' && module.hot) {
+        // Enable Webpack hot module replacement for reducers
+        module.hot.accept('../reducers', () => {
+            store.replaceReducer(require('../reducers').default);
+        });
+    }
+
     return store;
 };

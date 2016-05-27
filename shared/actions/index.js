@@ -11,6 +11,7 @@
 'use strict';
 
 export * from './auth.actions';
+export * from './facebook.actions';
 export * from './todo.actions';
 export * from './visibilityFilter.actions';
 export * from './subreddit.actions';

@@ -15,11 +15,13 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { HTML as htmlProps } from '../config/helmet.config';
 import SiteNavbar from '../containers/siteNavbar.container';
+import AsyncVendorScripts from './asyncVendorScripts.component';
 
 class App extends Component {
     render () {
         return (
             <div>
+                <AsyncVendorScripts language='en_US' />            
                 <Helmet {...htmlProps.head}/>
                 <SiteNavbar auth={this.props.auth} dispatch={this.props.dispatch} {...this.props.location} />
                 {React.cloneElement(this.props.children, {auth: this.props.auth} )}

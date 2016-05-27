@@ -22,13 +22,26 @@ import routes from '../shared/routes';
 const store = createStore(window.__app_data, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
-if (window.__isProduction === false) {
+if (process.env.NODE_ENV !== 'production') {
     window.React = React; // Enable debugger
-}
+    const ReduxDevTool = require('../shared/containers/reduxDevTool.container').default;
 
-render (
-    <Provider store={store}>
-        <Router history={history} routes={routes(store)} />
-    </Provider>,
-    document.getElementById('content')
-);
+    // Render the dev tools instead
+    render(
+        <Provider store={store}>
+            <div>
+                <Router history={history} routes={routes(store) } />
+                <ReduxDevTool />
+            </div>
+        </Provider>,
+        document.getElementById('content')
+    );
+}
+else { //TODO: Clean this up!
+    render(
+        <Provider store={store}>
+            <Router history={history} routes={routes(store) } />
+        </Provider>,
+        document.getElementById('content')
+    );
+}

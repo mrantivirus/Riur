@@ -49,7 +49,7 @@ export default (app) => {
             jwt.verifyPromiseBased(req.token)
                 .then((contents) => {
                     // Token is valid, dispatch authentication
-                    store.dispatch(serverLogin(contents));
+                    store.dispatch(serverLogin(contents.user));
                     doRouteMatching(req, res, next, store, history);
                 })
                 .catch((err) => {
