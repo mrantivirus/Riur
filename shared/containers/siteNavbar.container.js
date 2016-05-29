@@ -26,6 +26,11 @@ class SiteNavbar extends Component {
             {
                 url: '/reddit',
                 text: 'Reddit API'
+            },
+            {
+                url: '/profile',
+                text: 'Profile',
+                needsAuth: true
             }
         ];
     }

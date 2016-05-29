@@ -15,12 +15,14 @@ import App from '../components/app.component';
 import HomePage from './home.page';
 import RedditPage from './reddit.page';
 import TodoPage from './todo.page';
+import ProfilePage from './profile.page';
 
 export {
     App,
     HomePage,
     RedditPage,
-    TodoPage
+    TodoPage,
+    ProfilePage
 }
 
 if (module.hot) {

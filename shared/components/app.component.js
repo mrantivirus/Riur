@@ -18,21 +18,23 @@ import SiteNavbar from '../containers/siteNavbar.container';
 import AsyncVendorScripts from './asyncVendorScripts.component';
 
 class App extends Component {
-    render () {
+    render() {
         return (
             <div>
-                <AsyncVendorScripts language='en_US' />            
+                <AsyncVendorScripts language='en_US' />
                 <Helmet {...htmlProps.head}/>
                 <SiteNavbar auth={this.props.auth} dispatch={this.props.dispatch} {...this.props.location} />
-                {React.cloneElement(this.props.children, {auth: this.props.auth} )}
+                <div className='container-fluid'>
+                    {React.cloneElement(this.props.children, { auth: this.props.auth }) }
+                </div>
             </div>
         )
     }
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
     const { auth } = state;
-    
+
     return {
         auth
     }

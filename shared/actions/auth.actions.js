@@ -58,7 +58,7 @@ export const loginUser = (creds) => {
                 dispatch(receiveLogin(user));
                 
                 // You probably want to dispatch a toast and delay redirect
-                dispatch(push('/todo'));
+                dispatch(push('/profile'));
             })
             .catch(err => {
                 dispatch(loginError(err.message));
@@ -80,7 +80,7 @@ export const registerUser = (creds) => {
                 dispatch(receiveLogin(user));
                 
                 // You probably want to dispatch a toast and delay redirect
-                dispatch(push('/todo'));
+                dispatch(push('/profile'));
             })
             .catch(err => {
                 dispatch(loginError(err.message));

@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import { App, HomePage, RedditPage, TodoPage } from './pages';
+import { App, HomePage, RedditPage, TodoPage, ProfilePage } from './pages';
 
 const appRoutes = (store) => {
     const requireAuth = (nextState, replace) => {
@@ -31,7 +31,8 @@ const appRoutes = (store) => {
         <Route path='/' component={App} >
             <IndexRoute component={HomePage} />
             <Route path='reddit' component={RedditPage} />
-            <Route path='todo' onEnter={requireAuth} component={TodoPage} />
+            <Route path='todo' component={TodoPage} />
+            <Route path='profile' onEnter={requireAuth} component={ProfilePage} />
         </Route>
     );
 };

@@ -81,7 +81,7 @@ class Navbar extends Component {
 
                     <div className='collapse navbar-collapse' id='collapsed-navbar'>
                         <ul className='nav navbar-nav'>
-                            {this.props.links.map((val, index) => {
+                            {this.props.links.filter((link) => { if (link.needsAuth) { return isAuthenticated } else { return true }}).map((val, index) => {
                                 return (
                                     <li key={index} className={this.props.router.isActive(val.url) ? "active" : ""} >
                                         <Link to={val.url}>{val.text}</Link>
@@ -163,4 +163,5 @@ Navbar.propTypes = {
     auth: PropTypes.object.isRequired
 };
 
+// withRouter adds the 'router' object to props
 export default withRouter(Navbar);

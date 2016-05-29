@@ -53,6 +53,7 @@ export const fbLoginUser = (fbData) => {
             .then(data => {
                 const user = fromJS(data);
                 dispatch(receiveLogin(user));
+                dispatch(push('/profile'));
             })
             .catch(err => {
                 dispatch(loginError(err.message));
