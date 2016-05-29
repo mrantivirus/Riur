@@ -29,7 +29,8 @@ export const HTML = {
             { property: 'og:image:height', content: '200' },
         ],
         link: [
-            { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' }
+            { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css' },
+            { rel: 'stylesheet', type: 'text/css', href:'/css/modal.css' }
         ],
         // Plural so react-helmet doesn't hijack rendering this and put it in the <head>
         scripts: [

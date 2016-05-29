@@ -84,8 +84,6 @@ const authController = {
                 return console.log(err);
             }
 
-            console.log('facebook.login', req.body);
-
             // There is a Facebook account already, so success!
             if (user) {
                 res.cookie('token', jwt.sign({ user: user }), { signed: true, httpOnly: true, maxAge: ONEDAY_MILLISECONDS });
@@ -110,7 +108,7 @@ const authController = {
                 if (innerUser) { // User is already signed up! Let's merge.
                     innerUser.facebook = fb;
 
-                    innerUser.save()
+                    return innerUser.save()
                         .then((theUser) => {
                             res.cookie('token', jwt.sign({ user: theUser }), { signed: true, httpOnly: true, maxAge: ONEDAY_MILLISECONDS });
                             return res.send(theUser);
@@ -120,18 +118,18 @@ const authController = {
                             return console.log(err);
                         });
                 }
-            });
 
-            Auth.create({
-                email: req.body.email.toLowerCase(),
-                facebook: fb,
-                dateRegistered: req.body.date // if this is empty, then it uses the server time
-            }).then((newUser) => {
-                res.cookie('token', jwt.sign({ user: newUser }), { signed: true, httpOnly: true, maxAge: ONEDAY_MILLISECONDS });
-                return res.send(newUser);
-            }).catch((err) => {
-                // TODO: Do better logging for db errors
-                return console.log(err);
+                Auth.create({
+                    email: req.body.email.toLowerCase(),
+                    facebook: fb,
+                    dateRegistered: req.body.date // if this is empty, then it uses the server time
+                }).then((newUser) => {
+                    res.cookie('token', jwt.sign({ user: newUser }), { signed: true, httpOnly: true, maxAge: ONEDAY_MILLISECONDS });
+                    return res.send(newUser);
+                }).catch((err) => {
+                    // TODO: Do better logging for db errors
+                    return console.log(err);
+                });
             });
         });
     },

@@ -52,7 +52,6 @@ export const fbLoginUser = (fbData) => {
             .then(response => response.json())
             .then(data => {
                 const user = fromJS(data);
-                console.log(user)
                 dispatch(receiveLogin(user));
             })
             .catch(err => {

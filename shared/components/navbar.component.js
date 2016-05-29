@@ -14,10 +14,54 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter, Link } from 'react-router';
 import Login from './login.component';
 import Logout from './logout.component';
+import SignUp from './signup.component';
 import FacebookAuth from './facebookAuth.component';
-import { loginUser, logoutUser } from '../actions';
+import { loginUser, logoutUser, registerUser } from '../actions';
+import Modal from 'react-modal';
+
+const style = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    }
+}
 
 class Navbar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            openLoginModal: false,
+            openSignUpModal: false
+        };
+
+        this.onLoginButtonClick = this.onLoginButtonClick.bind(this);
+        this.onSignUpButtonClick = this.onSignUpButtonClick.bind(this);
+        this.onLoginModalClose = this.onLoginModalClose.bind(this);
+        this.onSignUpModalClose = this.onSignUpModalClose.bind(this);
+    }
+
+    onLoginButtonClick() {
+        let myState = this.state;
+        myState.openLoginModal = true;
+        this.setState(myState)
+    }
+    onLoginModalClose() {
+        let myState = this.state;
+        myState.openLoginModal = false;
+        this.setState(myState)
+    }
+
+    onSignUpButtonClick() {
+        let myState = this.state;
+        myState.openSignUpModal = true;
+        this.setState(myState)
+    }
+    onSignUpModalClose() {
+        let myState = this.state;
+        myState.openSignUpModal = false;
+        this.setState(myState)
+    }
+
     render() {
         const { dispatch, auth } = this.props;
         const { isAuthenticated, errorMessage } = auth;
@@ -49,19 +93,65 @@ class Navbar extends Component {
                         <div className='navbar-right navbar-form'>
                             {!isAuthenticated &&
                                 <div>
-                                    <Login
-                                        errorMessage={errorMessage}
-                                        onLoginClick={creds => dispatch(loginUser(creds)) } />
-                                    <FacebookAuth dispatch={dispatch} />    
-                            </div>                                
+                                    <button type='button' className='btn btn-primary' onClick={this.onLoginButtonClick}>
+                                        Login
+                                    </button>
+                                    <button type='button' className='btn btn-success'  onClick={this.onSignUpButtonClick}>
+                                        Sign Up
+                                    </button>
+                                </div>
                             }
-                            
+
                             {isAuthenticated &&
                                 <Logout onLogoutClick={() => dispatch(logoutUser()) } />
                             }
                         </div>
                     </div>
 
+                </div>
+                <div>
+                    <Modal style={style} className='Modal__Bootstrap modal-dialog' isOpen={this.state.openLoginModal} onRequestClose={this.onLoginModalClose}>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <button type='button' className='close' onClick={this.onLoginModalClose}>
+                                    <span aria-hidden="true">&times; </span>
+                                    <span className="sr-only">Close</span>
+                                </button>
+                                <h4 className='modal-title'>Login</h4>
+                            </div>
+
+                            <div className='modal-body'>
+                                <Login
+                                    errorMessage={errorMessage}
+                                    onLoginClick={creds => dispatch(loginUser(creds)) } />
+                            </div>
+
+                            <div className='modal-footer'>
+                                <FacebookAuth dispatch={dispatch} callback={this.onLoginModalClose} />
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal style={style} className='Modal__Bootstrap modal-dialog' isOpen={this.state.openSignUpModal} onRequestClose={this.onSignUpModalClose}>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <button type='button' className='close' onClick={this.onSignUpModalClose}>
+                                    <span aria-hidden="true">&times; </span>
+                                    <span className="sr-only">Close</span>
+                                </button>
+                                <h4 className='modal-title'>Login</h4>
+                            </div>
+
+                            <div className='modal-body'>
+                                <SignUp
+                                    errorMessage={errorMessage}
+                                    onSignUpClick={creds => dispatch(registerUser(creds)) } />
+                            </div>
+
+                            <div className='modal-footer'>
+                                <FacebookAuth dispatch={dispatch} callback={this.onLoginModalClose} />
+                            </div>
+                        </div>
+                    </Modal>
                 </div>
             </nav>
         );
@@ -72,11 +162,5 @@ Navbar.propTypes = {
     dispatch: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
 };
-
-// Navbar.contextTypes = {
-//     router: function () {
-//     return React.PropTypes.func.isRequired;
-//   }
-// };
 
 export default withRouter(Navbar);

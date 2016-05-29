@@ -67,6 +67,28 @@ export const loginUser = (creds) => {
     };
 };
 
+export const registerUser = (creds) => {
+    return ( dispatch ) => {
+        dispatch(requestLogin(creds));
+        
+        return fetch.post('/auth/signup', JSON.stringify(creds))
+            .then(handleErrors)
+            .then(response => response.json())
+            .then(data => {
+                const user = fromJS(data);
+                
+                dispatch(receiveLogin(user));
+                
+                // You probably want to dispatch a toast and delay redirect
+                dispatch(push('/todo'));
+            })
+            .catch(err => {
+                dispatch(loginError(err.message));
+                return Promise.reject(err);
+            });
+    };
+};
+
 // TODO: Make this server only
 export const serverLogin = (user) => {
     return (dispatch) => {
