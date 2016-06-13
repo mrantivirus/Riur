@@ -19,6 +19,8 @@ import FacebookAuth from './facebookAuth.component';
 import { loginUser, logoutUser, registerUser } from '../actions';
 import Modal from 'react-modal';
 
+import { Navbar as NavBar, Nav, NavItem } from 'react-bootstrap';
+
 const style = {
     overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
@@ -67,48 +69,41 @@ class Navbar extends Component {
         const { isAuthenticated, errorMessage } = auth;
 
         return (
-            <nav className='navbar navbar-default'>
-                <div className='container-fluid'>
-                    <div className='navbar-header'>
-                        <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#collapsed-navbar' aria-expanded='false'>
-                            <span className='sr-only'>Toggle navigation</span>
-                            <span className='icon-bar'></span>
-                            <span className='icon-bar'></span>
-                            <span className='icon-bar'></span>
-                        </button>
+            <NavBar fluid>
+                <NavBar.Header>
+                    <NavBar.Brand>
                         <Link className='navbar-brand' to='/'>{this.props.brand}</Link>
-                    </div>
+                    </NavBar.Brand>
+                    <NavBar.Toggle />
+                </NavBar.Header>
+                <NavBar.Collapse>
+                    <Nav>
+                        {this.props.links.filter((link) => { if (link.needsAuth) { return isAuthenticated } else { return true } }).map((val, index) => {
+                            return (
+                                <li key={index} className={this.props.router.isActive(val.url) ? "active" : ""} >
+                                    <Link to={val.url}>{val.text}</Link>
+                                </li>
+                            );
+                        }) }
+                    </Nav>
+                    <NavBar.Form pullRight>
+                        {!isAuthenticated &&
+                            <div>
+                                <button type='button' className='btn btn-primary' onClick={this.onLoginButtonClick}>
+                                    Login
+                                </button>
+                                <button type='button' className='btn btn-success'  onClick={this.onSignUpButtonClick}>
+                                    Sign Up
+                                </button>
+                            </div>
+                        }
 
-                    <div className='collapse navbar-collapse' id='collapsed-navbar'>
-                        <ul className='nav navbar-nav'>
-                            {this.props.links.filter((link) => { if (link.needsAuth) { return isAuthenticated } else { return true }}).map((val, index) => {
-                                return (
-                                    <li key={index} className={this.props.router.isActive(val.url) ? "active" : ""} >
-                                        <Link to={val.url}>{val.text}</Link>
-                                    </li>
-                                );
-                            }) }
-                        </ul>
+                        {isAuthenticated &&
+                            <Logout onLogoutClick={() => dispatch(logoutUser()) } />
+                        }
+                    </NavBar.Form>
+                </NavBar.Collapse>
 
-                        <div className='navbar-right navbar-form'>
-                            {!isAuthenticated &&
-                                <div>
-                                    <button type='button' className='btn btn-primary' onClick={this.onLoginButtonClick}>
-                                        Login
-                                    </button>
-                                    <button type='button' className='btn btn-success'  onClick={this.onSignUpButtonClick}>
-                                        Sign Up
-                                    </button>
-                                </div>
-                            }
-
-                            {isAuthenticated &&
-                                <Logout onLogoutClick={() => dispatch(logoutUser()) } />
-                            }
-                        </div>
-                    </div>
-
-                </div>
                 <div>
                     <Modal style={style} className='Modal__Bootstrap modal-dialog' isOpen={this.state.openLoginModal} onRequestClose={this.onLoginModalClose}>
                         <div className='modal-content'>
@@ -153,7 +148,7 @@ class Navbar extends Component {
                         </div>
                     </Modal>
                 </div>
-            </nav>
+            </NavBar>
         );
     };
 };
