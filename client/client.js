@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import createStore from '../shared/store/createStore';
+import ReactGA from 'react-ga';
 
 import routes from '../shared/routes';
 
@@ -38,10 +39,16 @@ if (process.env.NODE_ENV !== 'production') {
     );
 }
 else { //TODO: Clean this up!
+    ReactGA.initialize('UA-000000-01');
     render(
         <Provider store={store}>
-            <Router history={history} routes={routes(store) } />
+            <Router history={history} routes={routes(store)} onUpdate={logPageView} />
         </Provider>,
         document.getElementById('content')
     );
 }
+
+function logPageView() {
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
+};

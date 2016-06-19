@@ -43,7 +43,7 @@ export default class Layout extends Component {
                     <div id='content' dangerouslySetInnerHTML={{ __html: content }} />
                     <script dangerouslySetInnerHTML={{ __html: `window.__app_data=${serialize(store.getState())}; window.__isProduction=${isProd}` }} />
                     {htmlProps.head.scripts.map((val, i) => {
-                        return <script src={val.src} type={val.type} key={i} />
+                        return <script src={val.src} type={val.type} key={i} async />
                     }) }
                 </body>
             </html>

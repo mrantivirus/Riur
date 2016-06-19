@@ -27,6 +27,7 @@ export const HTML = {
             { property: 'og:creator', content: '@mrantivirus' },
             { property: 'og:image:width', content: '200' },
             { property: 'og:image:height', content: '200' },
+            { name: 'google-site-verification', content: 'GOOGLE_SITE_VERIFICATION_CODE_HERE' }
         ],
         link: [
             { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css' }
