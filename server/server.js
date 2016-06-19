@@ -46,21 +46,21 @@ mongoose.connect(DATABASE_URL, (err) => {
     if (err) {
         console.log('Please make sure mongod is running...');
         console.log(err);
-        
+
         // In your project, you can prevent your server from 
         //  starting if mongo isn't running. I choose not to.
     }
-    
+
     console.log('Database is connected...');
 });
 
-/* Webpack stuff */
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from '../webpack.config.dev';
+if (!process.env.NODE_ENV) {
+    /* Webpack stuff */
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpackConfig = require('../webpack.config.dev');
 
-if (!ENV.isProduction) {
     const compiler = webpack(webpackConfig);
 
     app.use(webpackDevMiddleware(compiler, {
