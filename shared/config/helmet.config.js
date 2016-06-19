@@ -29,13 +29,10 @@ export const HTML = {
             { property: 'og:image:height', content: '200' },
         ],
         link: [
-            { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css' },
-            { rel: 'stylesheet', type: 'text/css', href:'/css/modal.css' }
+            { rel: 'stylesheet', type: 'text/css', href:'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css' }
         ],
         // Plural so react-helmet doesn't hijack rendering this and put it in the <head>
         scripts: [
-            { src:'https://code.jquery.com/jquery-1.12.3.min.js', type:'text/javascript'},
-            { src:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', type:'text/javascript'},
             { src:'/js/common.js', type:'text/javascript'},            
             { src:'/js/bundle.js', type:'text/javascript'},
         ]

@@ -17,9 +17,9 @@ import Logout from './logout.component';
 import SignUp from './signup.component';
 import FacebookAuth from './facebookAuth.component';
 import { loginUser, logoutUser, registerUser } from '../actions';
-import Modal from 'react-modal';
 
-import { Navbar as NavBar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar as NavBar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const style = {
     overlay: {
@@ -80,21 +80,21 @@ class Navbar extends Component {
                     <Nav>
                         {this.props.links.filter((link) => { if (link.needsAuth) { return isAuthenticated } else { return true } }).map((val, index) => {
                             return (
-                                <li key={index} className={this.props.router.isActive(val.url) ? "active" : ""} >
-                                    <Link to={val.url}>{val.text}</Link>
-                                </li>
+                                <LinkContainer key={index} to={val.url} active={this.props.router.isActive(val.url) }>
+                                    <NavItem>{val.text}</NavItem>
+                                </LinkContainer>
                             );
                         }) }
                     </Nav>
                     <NavBar.Form pullRight>
                         {!isAuthenticated &&
                             <div>
-                                <button type='button' className='btn btn-primary' onClick={this.onLoginButtonClick}>
+                                <Button bsStyle='primary' onClick={this.onLoginButtonClick}>
                                     Login
-                                </button>
-                                <button type='button' className='btn btn-success'  onClick={this.onSignUpButtonClick}>
+                                </Button>
+                                <Button bsStyle='success' onClick={this.onSignUpButtonClick}>
                                     Sign Up
-                                </button>
+                                </Button>
                             </div>
                         }
 
@@ -105,47 +105,32 @@ class Navbar extends Component {
                 </NavBar.Collapse>
 
                 <div>
-                    <Modal style={style} className='Modal__Bootstrap modal-dialog' isOpen={this.state.openLoginModal} onRequestClose={this.onLoginModalClose}>
-                        <div className='modal-content'>
-                            <div className='modal-header'>
-                                <button type='button' className='close' onClick={this.onLoginModalClose}>
-                                    <span aria-hidden="true">&times; </span>
-                                    <span className="sr-only">Close</span>
-                                </button>
-                                <h4 className='modal-title'>Login</h4>
-                            </div>
-
-                            <div className='modal-body'>
-                                <Login
-                                    errorMessage={errorMessage}
-                                    onLoginClick={creds => dispatch(loginUser(creds)) } />
-                            </div>
-
-                            <div className='modal-footer'>
-                                <FacebookAuth dispatch={dispatch} callback={this.onLoginModalClose} />
-                            </div>
-                        </div>
+                    <Modal show={this.state.openLoginModal} onHide={this.onLoginModalClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Login</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Login
+                                errorMessage={errorMessage}
+                                onLoginClick={creds => dispatch(loginUser(creds)) } />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <FacebookAuth dispatch={dispatch} callback={this.onLoginModalClose} />
+                        </Modal.Footer>
                     </Modal>
-                    <Modal style={style} className='Modal__Bootstrap modal-dialog' isOpen={this.state.openSignUpModal} onRequestClose={this.onSignUpModalClose}>
-                        <div className='modal-content'>
-                            <div className='modal-header'>
-                                <button type='button' className='close' onClick={this.onSignUpModalClose}>
-                                    <span aria-hidden="true">&times; </span>
-                                    <span className="sr-only">Close</span>
-                                </button>
-                                <h4 className='modal-title'>Login</h4>
-                            </div>
 
-                            <div className='modal-body'>
-                                <SignUp
-                                    errorMessage={errorMessage}
-                                    onSignUpClick={creds => dispatch(registerUser(creds)) } />
-                            </div>
-
-                            <div className='modal-footer'>
-                                <FacebookAuth dispatch={dispatch} callback={this.onLoginModalClose} />
-                            </div>
-                        </div>
+                    <Modal show={this.state.openSignUpModal} onHide={this.onSignUpModalClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Register</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <SignUp dispatch={dispatch}
+                                errorMessage={errorMessage}
+                                onSignUpClick={creds => dispatch(registerUser(creds)) } />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <FacebookAuth dispatch={dispatch} callback={this.onSignUpModalClose} />
+                        </Modal.Footer>
                     </Modal>
                 </div>
             </NavBar>

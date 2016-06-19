@@ -27,10 +27,14 @@ class UserBio extends Component {
 
     render() {
         const { user } = this.props;
+        
+        const name = user.get('facebook') != null ? user.get('facebook').get('name') : user.get('email');
+        const photo = user.get('facebook') != null ? user.get('facebook').get('photoURL') : '/images/reddit-logo.png';
+        
         return (
             <div className='row'>
-                <img src={user.get('facebook').get('photoURL') } className='img-responsive img-circle center-block' alt='Profile image' />
-                <h4 className='text-center'>{'Welcome, ' + user.get('facebook').get('name') }</h4>
+                <img src={photo} className='img-responsive img-circle center-block' alt='Profile image' />
+                <h4 className='text-center'>{'Welcome, ' + name}</h4>
             </div>
         );
     }

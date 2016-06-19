@@ -10,6 +10,7 @@
 
 'use strict';
 
+import { push } from 'react-router-redux';
 import fetch from '../utils/fetch';
 import { fromJS } from 'immutable';
 
@@ -64,7 +65,7 @@ export const fbLoginUser = (fbData) => {
 
 const handleErrors = (response) => {
     if (!response.ok) {
-        throw Error(response.statusText);
+        throw Error(response.headers.get("X-Error-Message"));
     }
     return response;
 };

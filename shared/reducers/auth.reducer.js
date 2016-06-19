@@ -10,7 +10,7 @@
 
 'use strict'
 
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from '../actions';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS, CLEAR_ERROR_MESSAGE } from '../actions';
 
 const auth = (state = {
     isFetching: false,
@@ -41,6 +41,10 @@ const auth = (state = {
                 isFetching: true,
                 isAuthenticated: false
             });
+        case CLEAR_ERROR_MESSAGE:
+            let newState = Object.assign({}, state);
+            newState.errorMessage = null;
+            return newState;
         default:
             return state;
     }

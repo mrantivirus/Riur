@@ -146,9 +146,17 @@ export const logoutUser = () => {
     };
 };
 
+export const CLEAR_ERROR_MESSAGE = 'CLEAR_ERROR_MESSAGE';
+
+export const clearErrorMessage = () => {
+    return {
+        type: CLEAR_ERROR_MESSAGE
+    }
+};
+
 const handleErrors = (response) => {
     if (!response.ok) {
-        throw Error(response.statusText);
+        throw Error(response.headers.get("X-Error-Message"));
     }
     return response;
 };

@@ -15,6 +15,7 @@ import { Auth } from '../models';
 import jwt from '../utils/jwt';
 
 const ONEDAY_MILLISECONDS = 86400000;
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
 
 const authController = {
     login: (req, res) => {
@@ -26,12 +27,14 @@ const authController = {
 
             // No user account was found
             if (!user) {
+                res.set('X-Error-Message', 'That email address is not registered.');                
                 return res.status(401).send({ message: 'That email address is not regiestered.' });
             }
 
             // Check if the password is the same
             bcrypt.compare(req.body.password, user.password, (err, valid) => {
                 if (!valid) {
+                res.set('X-Error-Message', 'Your password is incorrect.');                    
                     return res.status(401).send({ message: 'Your password is incorrect.' });
                 }
 
@@ -54,11 +57,22 @@ const authController = {
 
             // There is an account with that email address
             if (user) {
+                res.set('X-Error-Message', 'This email address is already registered.');
                 return res.status(401).send({ message: 'This email address is already registered.' });
+            }
+
+            // Do regex on the password
+            let pattern = new RegExp(PASSWORD_PATTERN);
+            
+            if (PASSWORD_PATTERN.exec(req.body.password) == null) {
+                const message = 'Your password needs to have at least: 1 UPPERCASE letter, 1 lowercase letter, 1 number, 1 special character, more than 7 characters.';
+                res.set('X-Error-Message', message);
+                return res.status(401).send({ message: message });
             }
 
             bcrypt.hash(req.body.password, 15, (err, hash) => {
                 if (err) {
+                    res.set('X-Error-Message', 'There was a problem creating your account.');
                     return res.status(500).send({ message: 'There was a problem creating your account.' });
                 }
 
