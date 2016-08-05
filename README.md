@@ -17,11 +17,11 @@ $ git init
 
 ### Roadmap
 Here is a list of planned features:
-* Universal Auth (JWT)
-* Database
-* React Router
-* Hot Reloading
-* Immutable Redux Store
+* ~~Universal Auth (JWT)~~
+* ~~Mongo Database~~
+* ~~React Router~~
+* ~~Hot Reloading~~
+* ~~Immutable Redux Store~~
 * Unit Tests!
 
 ### Development
