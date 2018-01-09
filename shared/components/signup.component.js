@@ -10,7 +10,8 @@
 
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Alert, Form, FormGroup, FormControl, Col, ControlLabel, Checkbox, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;

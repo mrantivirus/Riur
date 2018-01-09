@@ -24,7 +24,3 @@ export {
     TodoPage,
     ProfilePage
 }
-
-if (module.hot) {
-    module.hot.accept();
-}

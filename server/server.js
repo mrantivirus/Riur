@@ -45,12 +45,12 @@ routes(app);
 mongoose.connect(DATABASE_URL, (err) => {
     if (err) {
         console.log('Please make sure mongod is running...');
-        console.log(err);
+        console.log(err.message);
 
         // In your project, you can prevent your server from 
         //  starting if mongo isn't running. I choose not to.
     }
-
+    else
     console.log('Database is connected...');
 });
 

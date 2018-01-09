@@ -11,10 +11,11 @@
 'use strict'
 
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { AppContainer } from 'react-hot-loader';
 import createStore from '../shared/store/createStore';
 import ReactGA from 'react-ga';
 
@@ -27,20 +28,32 @@ if (process.env.NODE_ENV !== 'production') {
     window.React = React; // Enable debugger
     const ReduxDevTool = require('../shared/containers/reduxDevTool.container').default;
 
-    // Render the dev tools instead
-    render(
-        <Provider store={store}>
-            <div>
-                <Router history={history} routes={routes(store) } />
-                <ReduxDevTool />
-            </div>
-        </Provider>,
+    // hydrate the dev tools instead
+    const renderable = <Provider store={store}>
+                            <div>
+                                <Router history={history} routes={routes(store)} />
+                                <ReduxDevTool />
+                            </div>
+                        </Provider>;
+
+    const renderFromServer = (component) => hydrate(component,
         document.getElementById('content')
     );
+
+    renderFromServer(renderable);
+
+    if (module.hot) {
+        module.hot.accept();
+        renderFromServer(
+            <AppContainer>
+                {renderable}
+            </AppContainer>
+        );
+    }
 }
 else { //TODO: Clean this up!
     ReactGA.initialize('UA-000000-01');
-    render(
+    hydrate(
         <Provider store={store}>
             <Router history={history} routes={routes(store)} onUpdate={logPageView} />
         </Provider>,

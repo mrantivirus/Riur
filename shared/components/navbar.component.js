@@ -10,7 +10,8 @@
 
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router';
 import Login from './login.component';
 import Logout from './logout.component';

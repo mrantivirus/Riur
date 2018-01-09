@@ -6,6 +6,7 @@ module.exports = {
     
     entry: [
         'webpack-hot-middleware/client',
+        'react-hot-loader/patch',
         './client/client.js'
     ],
     
@@ -29,7 +30,7 @@ module.exports = {
                 exclude: [/node_modules/],
                 loader: 'babel-loader',
                 query: {
-                    presets: ["react", "es2015", "stage-0", 'react-hmre']
+                    presets: ["react", "es2015", "stage-0", "react-hot-loader/patch"]//, 'react-hmre']
                 }
             }
         ]
@@ -38,6 +39,7 @@ module.exports = {
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('common.js'),
         new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
